@@ -1,41 +1,47 @@
 """
-Azure AI Inference Provider.
+Azure AI Inference Provider (Generic Adapter).
 
 This module defines the provider implementation for Azure AI Inference-based
-chat completions. It adapts the Azure AI Inference SDK client to the
-`LLMProviderBase` interface, adding retry logic, telemetry, and usage
-extraction through `LLMClientHelper`.
+chat completions. It keeps the consumer API generic (dicts, lists, callables)
+while internally adapting to Azure's typed message and tool models.
 
-Classes:
-    AzureInferenceProvider: Provider implementation for Azure AI Inference.
+Features:
+    * Accepts user/system prompts as plain strings or multimodal dicts.
+    * Accepts Python functions as tools (auto-converts to Azure tool definitions).
+    * Handles tool calls by executing registered Python callables.
+    * Supports structured outputs (JSON schema, response_format).
+    * Returns simple str or (str, usage) so consumers never import Azure SDK models.
 
-Example:
-    >>> from azure.ai.inference.aio import ChatCompletionsClient
-    >>> from src.factory.utils.utility import _get_azure_credential
-    >>> from src.factory.llm.azure_inference_provider import AzureInferenceProvider
-    >>> from src.factory.llm.llm_model_config import LLM_MODELS
-    >>>
-    >>> credential = _get_azure_credential(api_key="<your-api-key>")
-    >>> client = ChatCompletionsClient(
-    ...     endpoint="https://<endpoint>",
-    ...     credential=credential,
-    ...     api_version="2024-12-01",
-    ... )
-    >>> model_config = LLM_MODELS["gpt-4o"]
-    >>> provider = AzureInferenceProvider(client, model_config)
+Example (generic app code, no Azure imports):
     >>> response, usage = await provider.get_completion(
-    ...     system_prompt="You are a helpful assistant.",
-    ...     user_prompt="Explain observability in one sentence.",
-    ...     max_completion_tokens=50,
+    ...     system_prompt="Detect hazards in this image.",
+    ...     user_prompt=[
+    ...         {"type": "text", "text": "What hazards do you see?"},
+    ...         {"type": "image_url", "url": "https://example.com/hazard.jpg"},
+    ...     ],
+    ...     tools=[get_current_datetime],
     ...     return_usage=True,
     ... )
     >>> print(response)
-    "Observability is the ability to understand a system's internal state
-     by examining its external outputs."
+    {"hazards": ["ladder", "spill"]}
 """
 
-from typing import Any, Dict, Tuple, Union
+import json
+from typing import Any, Dict, Tuple, Union, Callable, List
 
+from azure.ai.inference.models import (
+    SystemMessage,
+    UserMessage,
+    ToolMessage,
+    ChatCompletionsToolDefinition,
+    FunctionDefinition,
+    ChatCompletionsToolCall,
+    ChatRequestMessage,
+    TextContentItem, 
+    ImageContentItem,
+    ImageUrl,
+    ImageDetailLevel
+)
 from src.factory.logger.telemetry import LoggingFactory
 from ..base_provider import LLMProviderBase
 from ..client_helper import LLMClientHelper
@@ -46,83 +52,163 @@ logger = logging_factory.get_logger(__name__)
 
 
 class AzureInferenceProvider(LLMProviderBase):
-    """
-    LLM provider for Azure AI Inference (chat + completion).
-
-    Integrates with `LLMModelConfig` to ensure only supported arguments
-    are passed into the request payload. Handles retries and telemetry
-    for resiliency in production environments.
-    """
+    """Generic adapter provider for Azure AI Inference (chat + completion)."""
 
     def __init__(self, client: Any, model_config: LLMModelConfig):
-        """
-        Initialize the Azure AI Inference provider.
-
-        Args:
-            client (Any): An instance of `ChatCompletionsClient`.
-            model_config (LLMModelConfig): Model metadata and capabilities.
-        """
         super().__init__(model_config, "azure-ai-inference")
         self.client = client
         self.model_config = model_config
+        self.tool_registry: Dict[str, Callable[..., str]] = {}
+
+    def register_tool(self, func: Callable[..., str]) -> ChatCompletionsToolDefinition:
+        """
+        Register a Python function as a tool callable by the model.
+
+        Args:
+            func (Callable[..., str]): Function with a name + docstring.
+
+        Returns:
+            ChatCompletionsToolDefinition: The corresponding tool schema.
+        """
+        tool_def = ChatCompletionsToolDefinition(
+            function=FunctionDefinition(
+                name=func.__name__,
+                description=func.__doc__ or "No description provided.",
+                parameters={"type": "object", "properties": {}},  # can introspect signature later
+            )
+        )
+        self.tool_registry[func.__name__] = func
+        logger.info("Registered tool '%s' for model=%s", func.__name__, self.model_config.name)
+        return tool_def
+
+    async def _handle_tool_calls(
+        self,
+        messages: list,
+        tool_calls: list,
+    ) -> str:
+        """
+        Handle tool calls returned by the model.
+
+        Args:
+            messages (list): Current conversation messages (System/User/Tool).
+            tool_calls (list): Tool calls returned by the model.
+
+        Returns:
+            str: Result of the first executed tool call (if any).
+        """
+        for tool_call in tool_calls:
+            if not isinstance(tool_call, ChatCompletionsToolCall):
+                continue
+
+            args = json.loads(tool_call.function.arguments or "{}")
+            func = self.tool_registry.get(tool_call.function.name)
+
+            if not func:
+                logger.warning("No registered tool found for '%s'", tool_call.function.name)
+                continue
+
+            try:
+                result = func(**args)
+                logger.info(
+                    "Executed tool '%s' with args=%s result=%s",
+                    tool_call.function.name, args, result
+                )
+
+                messages.append(
+                    ToolMessage(content=result, tool_call_id=tool_call.id)
+                )
+
+                return result
+            except Exception as e:
+                logger.error(
+                    "Error executing tool '%s' with args=%s: %s",
+                    tool_call.function.name, args, e, exc_info=True
+                )
+                raise
+
+        return ""
 
     async def get_completion(
         self,
         system_prompt: str,
-        user_prompt: str,
+        user_prompt: Union[str, List[Dict[str, Any]]],
         **kwargs: Any,
     ) -> Union[str, Tuple[str, Dict[str, Any]]]:
         """
         Generate a completion using system and user prompts.
 
         Args:
-            system_prompt (str): System context message for the model.
-            user_prompt (str): User input message, which can be plain text
-                or multimodal (e.g., text + image).
-            **kwargs (Any): Optional runtime parameters, including:
-                - max_completion_tokens (int): Maximum tokens for the response.
-                - reasoning (bool): Enable reasoning mode (if supported).
-                - response_format (Any): Structured response format (e.g., JSON schema).
-                - tools (list[dict]): Tool/function definitions for function calling.
-                - return_usage (bool): If True, return a tuple (output, usage).
+            system_prompt (str): System context message.
+            user_prompt (Union[str, List[Dict]]): User input; plain string or multimodal blocks.
+            **kwargs (Any): Optional runtime args:
+                - tools (list[Callable]): Python functions to expose as tools.
+                - tool_choice (str): Tool selection mode ("auto", "none", etc.).
+                - response_format (Any): Structured output schema.
+                - return_usage (bool): If True, return (content, usage).
 
         Returns:
-            str: Model output as plain text.
-            Tuple[str, Dict[str, Any]]: If return_usage=True, returns both output and usage.
-
-        Raises:
-            ValueError: If the response is empty.
-            Exception: Propagates any SDK or runtime errors after retries.
+            str or (str, Dict): Response text, optionally with usage metadata.
         """
-        # Build request using model-aware configuration
-        request_payload = self.model_config.build_request_args(**kwargs)
-
-        # Adapt to Azure Inference "messages" format
-        request_payload["messages"] = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
+        # Build messages
+        messages: list[ChatRequestMessage] = [
+            SystemMessage(content=system_prompt)
         ]
+        if isinstance(user_prompt, str):
+            # Wrap plain text in a TextContentItem
+            messages.append(UserMessage(content=[TextContentItem(text=user_prompt)]))
 
-        logger.info(
-            "Request payload for Azure Inference model=%s: %s",
-            self.model_config.name, request_payload
-        )
+        elif isinstance(user_prompt, list):
+            content_items = []
+            for block in user_prompt:
+                if block["type"] == "text":
+                    content_items.append(TextContentItem(text=block["text"]))
+                elif block["type"] == "image_url":
+                    content_items.append(
+                        ImageContentItem(
+                            image_url=ImageUrl(
+                                url=block["image_url"]["url"],
+                                detail=ImageDetailLevel.HIGH
+                            )
+                        )
+                    )
+            messages.append(UserMessage(content=content_items))
+        else:
+            raise TypeError("user_prompt must be str or list[dict]")
+
+        # Register and adapt tools
+        tool_defs = []
+        for func in kwargs.get("tools", []):
+            tool_defs.append(self.register_tool(func))
+
+        # Build request payload (filtering unsupported args)
+        request_payload = self.model_config.build_request_args(**kwargs)
+        request_payload.update({
+            "model": self.model_config.name,
+            "messages": messages,
+        })
+        if tool_defs:
+            request_payload["tools"] = tool_defs
+        if "tool_choice" in kwargs:
+            request_payload["tool_choice"] = kwargs["tool_choice"]
+
+        logger.debug("Final request payload=%s", request_payload)
 
         async def _call():
             return await self.client.complete(**request_payload)
 
         response = await LLMClientHelper.run_with_retry(_call)
-        if response is None:
+        if not response or not response.choices:
             raise ValueError("No response received from Azure AI Inference")
 
-        try:
-            content = response.choices[0].message.content.strip()
-        except Exception as e:
-            logger.error("Failed to parse completion response: %s", e, exc_info=True)
-            raise
+        choice = response.choices[0].message
+
+        # Handle tool calls
+        if getattr(choice, "tool_calls", None):
+            return await self._handle_tool_calls(messages, choice.tool_calls)
+
+        content = (choice.content or "").strip()
 
         if kwargs.get("return_usage"):
-            usage = LLMClientHelper.extract_usage(response)
-            return content, usage
+            return content, LLMClientHelper.extract_usage(response)
 
         return content

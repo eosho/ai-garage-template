@@ -65,6 +65,7 @@ class BaseAgent(ABC):
         model: str,
         name: str,
         agent_id: Optional[str] = None,
+        instructions: Optional[str] = None,
         description: Optional[str] = None,
         response_format: Optional[ResponseFormatJsonSchemaType] = None,
         tools: Optional[list] = None,
@@ -74,6 +75,7 @@ class BaseAgent(ABC):
         self.model = model
         self.name = name
         self.agent_id = agent_id
+        self.instructions = instructions
         self.description = description
         self.response_format = response_format
         self.tools = tools

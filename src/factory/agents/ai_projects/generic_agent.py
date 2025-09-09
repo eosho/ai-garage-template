@@ -110,7 +110,7 @@ class GenericAgent(BaseAgent):
             agent_output = None
             agent = await self.create(
                 name=self.name,
-                instructions=self.get_instructions(),
+                instructions=self.get_instructions() or self.instructions,
                 tools=tools or self.tools,
                 response_format=self.response_format
             )

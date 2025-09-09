@@ -34,21 +34,18 @@ Usage Example:
     >>> from src.factory.llm.llm_model_config import LLM_MODELS
     >>> gpt5 = LLM_MODELS["gpt-5"]
     >>> request = gpt5.build_request_args(
-    ...     prompt="Explain quantum computing simply.",
     ...     max_completion_tokens=2048,
-    ...     reasoning=True
+    ...     stream=True
     ... )
     >>> print(request)
     {
         'model': 'gpt-5',
-        'prompt': 'Explain quantum computing simply.',
         'max_completion_tokens': 2048,
-        'reasoning': True
+        'stream': True
     }
 """
 
-import json
-from typing import Set, Dict, Any, Optional
+from typing import Any, Dict, Any, Literal, Optional, Union
 from src.factory.logger.telemetry import LoggingFactory
 
 # Initialize telemetry/logging
@@ -56,37 +53,24 @@ logging_factory = LoggingFactory()
 logger = logging_factory.get_logger(__name__)
 
 
+# Default features available across *all* chat completion models
+DEFAULT_FEATURES: Dict[str, type | tuple[type, ...]] = {
+    "seed": int,
+    "response_format": object,  # can be JSON schema (dict) or "json"
+    "max_tokens": int,
+    "stream": bool,
+    "max_completion_tokens": int,
+}
+
+
 class LLMModelConfig:
-    """
-    Encapsulates metadata and supported features for a specific LLM model.
-
-    Responsibilities:
-        - Store metadata (model name, provider type, version).
-        - Track supported features for safe runtime configuration.
-        - Validate requested parameters against supported features.
-        - Build request payloads for completion APIs.
-
-    Attributes:
-        name (str): Model identifier (e.g., "gpt-5", "gpt-4o").
-        version (str): API version or deployment version.
-        features (Set[str]): Set of supported features (e.g.,
-            {"reasoning", "function_calling"}).
-
-    Example:
-        >>> config = LLMModelConfig(
-        ...     name="gpt-5",
-        ...     version="2025-03-01",
-        ...     features={"reasoning", "function_calling"}
-        ... )
-        >>> config.supports("reasoning")
-        True
-    """
+    """Encapsulates metadata and supported features for a specific LLM model."""
 
     def __init__(
         self,
         name: str,
         version: str,
-        features: Set[str],
+        features: Dict[str, type | tuple[type, ...]],
     ) -> None:
         self.name = name
         self.version = version
@@ -121,117 +105,83 @@ class LLMModelConfig:
             >>> gpt4o = LLM_MODELS["gpt-4o"]
             >>> request = gpt4o.build_request_args(
             ...     prompt="Translate to French: Hello",
-            ...     temperature=0.7,
-            ...     reasoning=True
+            ...     temperature=0.7
             ... )
             >>> print(request)
             {
                 'model': 'gpt-4o',
                 'temperature': 0.7,
-                'reasoning': True
             }
         """
         request: Dict[str, Any] = {"model": self.name}
 
         for key, value in kwargs.items():
-            if value is None:
+            if value is None or key in "return_usage":
                 continue
-            if key in self.features or key in {"temperature", "top_p"}:
+            if key in self.features:
+                expected_type = self.features[key]
+                if not isinstance(value, expected_type):
+                    logger.error(
+                        "Invalid type for feature '%s' in model=%s: expected %s, got %s",
+                        key, self.name, expected_type, type(value)
+                    )
+                    raise TypeError(f"Feature '{key}' must be of type {expected_type}, got {type(value)}")
                 request[key] = value
-                logger.debug(
-                    "Accepted feature '%s' with value=%s for model=%s",
-                    key, value, self.name
-                )
+                logger.debug("Accepted feature '%s' with value=%s for model=%s", key, value, self.name)
             else:
-                logger.warning(
-                    "Ignored unsupported argument '%s' for model=%s",
-                    key, self.name
-                )
+                logger.warning("Ignored unsupported argument '%s' for model=%s", key, self.name)
 
         return request
 
 
+
 # -------------------------------------------------------------------------
-# Registry of supported models
-# This should be populated from configuration, database, or API in real use.
-# For now, defaults are provided as a baseline.
+# Builder Utility
+# -------------------------------------------------------------------------
+def build_model(name: str, version: str, extra: Dict[str, Any]) -> LLMModelConfig:
+    """
+    Create an `LLMModelConfig` by merging default features with model-specific ones.
+
+    Args:
+        name (str): Model identifier (e.g., "gpt-5").
+        version (str): API version string.
+        extra (Dict[str, Any]): Additional features and their expected types.
+
+    Returns:
+        LLMModelConfig: Config object with combined features.
+    """
+    return LLMModelConfig(name, version, {**DEFAULT_FEATURES, **extra})
+
+
+# -------------------------------------------------------------------------
+# Registry of Supported Models
 # -------------------------------------------------------------------------
 
 LLM_MODELS: Dict[str, LLMModelConfig] = {
-    # GPT-5 (reasoning + advanced features)
-    "gpt-5": LLMModelConfig(
+    # GPT-5
+    "gpt-5": build_model(
         name="gpt-5",
         version="2025-03-01",
-        features={
-            "reasoning",
-            "max_completion_tokens",
-            "function_calling",
-            "response_format",
-            "prompt_caching",
-            "json_mode",
-            "reproducible_output",
+        extra={
+            "reasoning_effort": str,
+            "tools": object,
+            "tool_choice": str, # none, auto, required
+            "parallel_tool_calls": bool,
         },
     ),
 
-    # GPT-4o (multimodal + reasoning)
-    "gpt-4o": LLMModelConfig(
+    # GPT-4o
+    "gpt-4o": build_model(
         name="gpt-4o",
         version="2024-12-01",
-        features={
-            "reasoning",
-            "max_completion_tokens",
-            "function_calling",
-            "vision",
-            "max_tokens",
-            "response_format",
-            "json_mode",
+        extra={
+            **DEFAULT_FEATURES,
+            "temperature": float,
+            "top_p": float,
+            "tool_choice": object,
+            "tools": object
         },
     ),
-
-    # GPT-4o mini (lighter multimodal)
-    "gpt-4o-mini": LLMModelConfig(
-        name="gpt-4o-mini",
-        version="2024-12-01",
-        features={
-            "reasoning",
-            "max_completion_tokens",
-            "function_calling",
-            "vision",
-            "json_mode",
-        },
-    ),
-
-    # o4-mini (fast multimodal)
-    "o4-mini": LLMModelConfig(
-        name="o4-mini",
-        version="2024-11-01",
-        features={
-            "reasoning",
-            "max_completion_tokens",
-            "function_calling",
-            "vision",
-        },
-    ),
-
-    # o3-mini (smaller reasoning)
-    "o3-mini": LLMModelConfig(
-        name="o3-mini",
-        version="2024-10-01",
-        features={
-            "reasoning",
-            "max_completion_tokens",
-            "function_calling",
-        },
-    ),
-
-    # o3 (larger reasoning)
-    "o3": LLMModelConfig(
-        name="o3",
-        version="2024-10-01",
-        features={
-            "reasoning",
-            "max_completion_tokens",
-            "function_calling",
-        },
-    ),
+    
+    # Support more
 }

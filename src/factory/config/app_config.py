@@ -86,7 +86,7 @@ MEMORY_PROVIDERS: Set[str] = {"cosmosdb", "json"}
 DEFAULT_MEMORY_PROVIDER = "json"
 
 # Provider types
-DEFAULT_PROVIDER_TYPE: Literal["azure-ai-project", "azure-ai-inference", "azure_openai"] = "azure-ai-project"
+DEFAULT_PROVIDER_TYPE: Literal["azure-ai-project", "azure-ai-inference", "azure_openai"] = "azure-ai-inference"
 
 
 @lru_cache(maxsize=1)
