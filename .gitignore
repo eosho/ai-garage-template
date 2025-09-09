@@ -66,8 +66,3 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-
-# Ignores
-janus_client**
-agents/
-common/
