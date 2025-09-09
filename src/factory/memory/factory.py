@@ -13,7 +13,7 @@ Usage:
     {"foo": "bar"}
 """
 
-from src.factory.config.constants import MEMORY_PROVIDERS, DEFAULT_MEMORY_PROVIDER
+from src.factory.config.app_config import MEMORY_PROVIDERS, DEFAULT_MEMORY_PROVIDER
 from src.factory.logger.telemetry import LoggingFactory
 from src.factory.memory.base_provider import MemoryProviderBase
 from src.factory.memory.providers.cosmos_provider import CosmosMemoryProvider

@@ -41,7 +41,6 @@ Usage:
     True
 
 Environment:
-    By default, the secrets path is set from `AKEYLESS_SECRETS_PATH`. This should
     typically point to `/etc/secrets` in a Kubernetes/Docker environment, or a
     simulated directory on local development machines (e.g., `./secrets`).
 """
@@ -49,7 +48,6 @@ Environment:
 from pathlib import Path
 from typing import Optional
 
-from .constants import AKEYLESS_SECRETS_PATH
 from src.factory.logger.telemetry import LoggingFactory
 
 # Initialize telemetry (Azure Monitor if configured, otherwise fallback to console)
@@ -57,7 +55,7 @@ logging_factory = LoggingFactory()
 logger = logging_factory.get_logger(__name__)
 
 # Default secrets directory
-SECRETS_PATH = AKEYLESS_SECRETS_PATH
+SECRETS_PATH = "/etc/secrets"
 
 
 def _resolve_secret_path(filename: str) -> Path:

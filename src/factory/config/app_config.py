@@ -81,15 +81,6 @@ load_dotenv(find_dotenv(), override=True)
 # Global defaults / allowed values (moved here from constants.py)
 # ---------------------------------------------------------------------------
 
-# Default secrets directory
-AKEYLESS_SECRETS_PATH = "/etc/secrets"
-
-# Models that require `max_completion_tokens`
-MODELS_WITH_MAX_COMPLETION_TOKENS: Set[str] = {
-    "o1-preview", "o1-mini", "o4-mini", "o3-mini",
-    "o3", "gpt-4o", "gpt-4o-mini", "gpt-5"
-}
-
 # Memory providers
 MEMORY_PROVIDERS: Set[str] = {"cosmosdb", "json"}
 DEFAULT_MEMORY_PROVIDER = "json"
@@ -128,15 +119,13 @@ class AppConfig:
         self.COSMOS_DB_KEY = self._resolve("COSMOS_DB_KEY")
 
         # Other
-        self.AZURE_AI_INFERENCE_CHAT_ENDPOINT = self._resolve("AZURE_AI_INFERENCE_CHAT_ENDPOINT")
+        self.AZURE_AI_INFERENCE_CHAT_ENDPOINT = self._resolve("AZURE_AI_INFERENCE_CHAT_ENDPOINT", required=False)
         self.APPLICATION_INSIGHTS_CONNECTION_STRING = self._resolve(
             "APPLICATIONINSIGHTS_CONNECTION_STRING", required=False, default=""
         )
 
         # Defaults / business constants
         self.DEFAULT_PROVIDER = self._resolve("DEFAULT_PROVIDER", required=False, default=DEFAULT_PROVIDER_TYPE)
-        self.MODELS_WITH_MAX_COMPLETION_TOKENS = MODELS_WITH_MAX_COMPLETION_TOKENS
-        self.SECRETS_PATH = self._resolve("AKEYLESS_SECRETS_PATH", required=False, default="/etc/secrets")
         self.MEMORY_PROVIDERS = MEMORY_PROVIDERS
         self.DEFAULT_MEMORY_PROVIDER = DEFAULT_MEMORY_PROVIDER
 
