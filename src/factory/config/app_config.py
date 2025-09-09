@@ -97,7 +97,6 @@ DEFAULT_MEMORY_PROVIDER = "json"
 # Provider types
 DEFAULT_PROVIDER_TYPE: Literal["azure-ai-project", "azure-ai-inference", "azure_openai"] = "azure-ai-project"
 
-print(os.environ.get("AZURE_TENANT_ID"))
 
 @lru_cache(maxsize=1)
 class AppConfig:

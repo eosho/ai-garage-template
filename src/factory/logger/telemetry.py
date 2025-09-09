@@ -238,3 +238,6 @@ class LoggingFactory:
         except Exception as e:
             logging.error(f"Failed to configure console telemetry: {e}", exc_info=True)
             return False
+
+
+telemetry = LoggingFactory()
