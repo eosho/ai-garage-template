@@ -1,0 +1,893 @@
+{
+  "thread_crhPacyMITX5xz2S7WWxFyxA": {
+    "id": "901a1e93-f2e0-4227-92b1-9787c9b41911",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "priority": "high",
+        "rationale": "The absence of head protection in an area with potential falling objects presents a major safety risk of serious injury.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "priority": "high",
+        "rationale": "An injury has already occurred, signaling an ongoing major hazard; addressing this promptly can prevent further incidents.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_0mHtyXw0cGOrtIVgTAAxoR84": {
+    "id": "485d01f4-7028-4768-b045-4e3b248f07c8",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": "1",
+        "priority": "high",
+        "rationale": "Lack of required head protection in an area with falling object risk presents a major safety hazard and potential OSHA violation.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": "2",
+        "priority": "high",
+        "rationale": "A worker injury indicates a significant safety risk that could result in further incidents if not promptly addressed.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_rHVX2c33jGJqnwAin1ds0BK2": {
+    "id": "c508c281-cf33-4855-8652-381ba30a2cdb",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": "",
+        "priority": "high",
+        "rationale": "Failure to wear appropriate PPE, especially in areas with risk of falling objects, poses a major safety risk that could result in serious head injury.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": "",
+        "priority": "high",
+        "rationale": "An injury has already occurred in this area, indicating a significant and active safety hazard that could harm others.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_Itpul3SqfeJCwBSAkLfLUmHr": {
+    "id": "34831b55-6580-4f44-9175-c9c5a777bb82",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": "",
+        "priority": "high",
+        "rationale": "Not wearing head protection in an area with potential for falling objects creates a major safety risk; serious head injuries could occur if an incident happens.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": "",
+        "priority": "high",
+        "rationale": "An actual injury has already occurred in this location, indicating unsafe conditions that require prompt attention to prevent recurrence.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_L7i5kT4xItVO5LFl1HIARoDA": {
+    "id": "792d8c92-609c-4b81-9dcb-1a254b3fad28",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "priority": "high",
+        "rationale": "Lack of head protection in an environment where falling objects are possible presents a major safety risk that could result in serious head injuries.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "priority": "high",
+        "rationale": "A reported injury on the floor suggests an active hazard (e.g., slippery surface, obstruction) that poses a significant risk to worker safety and requires swift action.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_Mfy1002lZwNq041N0BnVOBgR": {
+    "id": "1888a03b-3f56-4c8f-b323-47d30fa92692",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": "",
+        "priority": "high",
+        "rationale": "Lack of head protection in an area with potential falling objects poses serious risk of head injury. Immediate correction is needed to prevent major harm.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": "",
+        "priority": "high",
+        "rationale": "Worker injury may indicate an ongoing hazard such as slippery surfaces or unsafe conditions. Rapid action is required to prevent further incidents.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_caVZ8sbSk3WgfDLoGsKJ8mnW": {
+    "id": "9963158f-1625-48ee-8e0f-63a9dae9cdb7",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": null,
+        "priority": "high",
+        "rationale": "Failure to wear head protection in areas with falling objects poses a major safety risk for serious injury and is a significant compliance issue.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": null,
+        "priority": "high",
+        "rationale": "A documented injury on site indicates ongoing risks from slippery/unsafe surfaces, requiring timely investigation and mitigation to prevent further incidents.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_YNEKXugytmGRL7zBvz5rxpQQ": {
+    "id": "47cec1df-63b6-44c7-b787-8fb4cce62105",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "priority": "high",
+        "rationale": "Not wearing hard hats in areas with possible falling objects exposes workers to serious head injuries. The risk is significant and requires prompt PPE enforcement.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "priority": "high",
+        "rationale": "An actual injury event indicates a substantial safety risk; corrective action and cause investigation are urgently needed to prevent recurrence.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_8CykqHKuzXi8vfCmkwPRtnfB": {
+    "id": "96bcadf0-04f4-41cd-9cc2-66743911d843",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": "",
+        "priority": "high",
+        "rationale": "Not wearing head protection in an area with potential for falling objects poses a major safety risk and violates compliance protocols.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": "",
+        "priority": "high",
+        "rationale": "A recent injury indicates a significant safety hazard requiring prompt investigation and corrective action.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_FxHfpNY7gkJSVKjoyj8dqEE5": {
+    "id": "d8f8a748-2608-42f2-91f5-fa1fe7a56f45",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "priority": "high",
+        "rationale": "Lack of head protection exposes workers to serious injury from falling objects, which is a major safety compliance issue in warehouse environments.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "priority": "high",
+        "rationale": "An actual injury has occurred, indicating an immediate risk to worker safety from slip or trip hazards. Prompt investigation and mitigation are required.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_F5bc8Dy8mi3SS0hUFWGD2ztV": {
+    "id": "ef28a475-5757-4daa-8197-28d220e64fe5",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": "",
+        "priority": "high",
+        "rationale": "Not wearing head protection in an area with potential falling objects poses a major safety risk and can result in serious injury.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": "",
+        "priority": "high",
+        "rationale": "An injury has already occurred, indicating immediate risk to others and potential safety non-compliance; rapid intervention is required.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_RE2YM6nsljLOdirpY2l3Nmaf": {
+    "id": "dcf62589-8fee-4609-b4af-94c4a88b7bd5",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": "",
+        "priority": "high",
+        "rationale": "Not wearing a hard hat in an area where falling objects are possible presents a major safety risk and non-compliance issue, especially in a warehouse environment.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": "",
+        "priority": "high",
+        "rationale": "A worker injury may indicate hazardous conditions such as slippery surfaces or equipment misuse; this poses a significant safety threat requiring prompt intervention.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_9BOmzk3yKyDtfxaiqcBwGCZy": {
+    "id": "7a87645c-7c5c-4e9c-8777-08e10ac21881",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "priority": "high",
+        "rationale": "High severity PPE violation exposes worker to risk of serious injury from falling objects in a high-risk area.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "priority": "high",
+        "rationale": "Injury occurrence indicates an ongoing unsafe condition that presents a major safety risk and requires prompt corrective action.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_iVykMTpUaMjM31s2wFVi7t1R": {
+    "id": "2ee38fc3-a991-4ea7-a0c4-174bededb885",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": "",
+        "priority": "high",
+        "rationale": "Failure to wear PPE in areas with falling object risks constitutes a major safety violation and exposes workers to head injuries.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": "",
+        "priority": "high",
+        "rationale": "An injury has already occurred, indicating an immediate hazard to other workers; risks should be addressed without delay.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_Vxw8zjfVlSJDwgzdDwaPqq32": {
+    "id": "fdb7ab0e-ae3f-4a9f-a2c2-6ff48a634280",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": "",
+        "priority": "high",
+        "rationale": "Absence of head protection creates a major risk of serious injury from falling objects, especially in areas near shelving where such incidents are likely.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": "",
+        "priority": "high",
+        "rationale": "Injury on the floor indicates a significant and active safety hazard that could recur, posing major risk to other personnel.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_HbnBp2XfACydlhRpUp5rswhU": {
+    "id": "c6ab43fa-b239-4ba5-9072-5347bbf772ec",
+    "prioritized_hazards": [
+      {
+        "id": "1",
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "Exposure to falling objects in warehouse environments poses a major safety risk and potential for serious head injury. PPE non-compliance needs prompt resolution to prevent injury.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "id": "2",
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "An actual injury indicates a major safety hazard that, if unaddressed, could lead to further incidents. Immediate attention required to investigate and prevent recurrence.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_rnXpHz6gXLMt48K4YSWnqJuq": {
+    "id": "efb2fa35-2da9-47f8-af7b-8d461027e0ce",
+    "prioritized_hazards": [
+      {
+        "id": "1",
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "Not wearing head protection in an area with potential falling objects presents a major risk of head injury.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "id": "2",
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "A worker injury suggests possible ongoing unsafe conditions, posing a substantial safety risk that warrants prompt action.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_ACEsZjOFoXNaBqD99SgJtLC8": {
+    "id": "1f4ef3a3-8c1e-480d-9484-69419c9848ff",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "priority": "high",
+        "rationale": "Not wearing proper head protection in areas with risk of falling objects poses major safety risks and can lead to serious head injuries or fatalities.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "priority": "high",
+        "rationale": "A worker injury indicates hazardous conditions (e.g., slippery surfaces) that can lead to repeated incidents; prompt action is required to prevent further harm.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_JcTXYD8E32k2hdX1a9omRJzy": {
+    "id": "e9e75602-0c6a-4b4a-8910-1e56a33b4836",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": "",
+        "priority": "high",
+        "rationale": "Not wearing head protection in an area with falling object risks can cause serious or fatal injuries; action required within 24 hours to prevent further risk.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": "",
+        "priority": "high",
+        "rationale": "Actual injury has occurred, indicating ongoing risk of harm. Immediate investigation and corrective measures are needed to prevent recurrence; should be addressed within 24 hours.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_r8OwFhzqrP5eHNPhke3jt0A6": {
+    "id": "c9c83e3e-facb-4c2e-b113-1ff31d58b03f",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "priority": "high",
+        "rationale": "Not wearing head protection in areas with risk of falling objects presents a major safety risk and potentially violates regulations.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "priority": "high",
+        "rationale": "An actual worker injury indicates a serious safety issue that could reoccur and may result in further harm or compliance violations.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_67PtWmq157ITnn8M7F5JCH0i": {
+    "id": "dddc5cae-c958-4ce6-9dca-427ea5e1c6b2",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": "",
+        "priority": "high",
+        "rationale": "Not wearing head protection in an area prone to falling objects can cause serious injury, presenting a major safety risk.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": "",
+        "priority": "high",
+        "rationale": "An injury suggests existing unsafe conditions that could lead to further harm, making prompt investigation and corrective action essential.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_YeL7lPzaxsmCxLo2ckzeqjcs": {
+    "id": "5ef5d4da-3176-4801-95bf-21d137d9391c",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": "",
+        "priority": "high",
+        "rationale": "Head protection is critical in areas with potential for falling objects; PPE non-compliance increases risk of severe injury.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": "",
+        "priority": "high",
+        "rationale": "Injuries on the floor suggest hazardous conditions (e.g., slips/trips/falls) that pose immediate safety and compliance concerns.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_mh8kdchkJrBGlLsE5ervrV73": {
+    "id": "bfb5f06e-f329-4663-b9e1-ae9002a5d1c7",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": "",
+        "priority": "high",
+        "rationale": "Not wearing head protection in areas with potential falling objects poses a major safety risk, though immediate life-threatening conditions are not directly indicated.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": "",
+        "priority": "high",
+        "rationale": "An injury has occurred, indicating a significant safety concern that could lead to further harm if not addressed urgently.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_eRi7pxThQ6o3y5yctk60kimT": {
+    "id": "752e52b4-d6ac-4bce-9e66-456d451c03e2",
+    "prioritized_hazards": [
+      {
+        "id": null,
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "Failure to wear head protection exposes workers to serious injury from falling objects, a major safety and compliance risk.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "id": null,
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "A reported injury indicates existing unsafe conditions; immediate investigation and remediation are required to prevent further incidents.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_ctzVm9QVn4z7zHXcLgehINZ0": {
+    "id": "7ee247a3-888b-46a0-978e-7e447c7a12a9",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": null,
+        "priority": "high",
+        "rationale": "Failure to wear head protection in areas with potential falling objects poses a major safety risk and could lead to serious head injury.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": null,
+        "priority": "high",
+        "rationale": "A recent injury indicates an unresolved hazardous condition which risks further injury; urgent investigation and controls are needed.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_IH5uRoJ3kUJQMwnzRyPPXgVM": {
+    "id": "a127a23e-9ca0-4db8-baa6-08f1f3f6e69d",
+    "prioritized_hazards": [
+      {
+        "id": "",
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "High severity PPE violations in a warehouse environment expose workers to falling object hazards, presenting a major safety risk and regulatory compliance issue.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "id": "",
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "An injury has already occurred, indicating immediate potential for further serious incidents if root causes are not addressed; major safety risk.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_YkBMDgZkX4Sy9cVbThyPYQvj": {
+    "id": "b52db0d8-befb-4bc3-bc38-b184b365be21",
+    "prioritized_hazards": [
+      {
+        "id": "",
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "High likelihood of severe injury from falling objects in warehouse; absence of PPE increases risk significantly.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "id": "",
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "An actual injury has occurred, indicating unsafe conditions that may affect other workers; urgent intervention is required to prevent recurrence.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_4N4zr8kkOoM1Zwp4ulgx49T4": {
+    "id": "eef0af50-5748-468b-8cd2-78e5fc4b621f",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "priority": "high",
+        "rationale": "Lack of PPE (hard hats) in areas where falling objects are likely presents a major safety risk and non-compliance with safety regulations.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "priority": "high",
+        "rationale": "A worker injury suggests hazardous conditions (e.g., slips or equipment misuse) requiring prompt correction to prevent further incidents.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_w9lQrafoH0XXYR4WJ2qbyKVR": {
+    "id": "4220a960-2d3c-48de-82b3-29c95184fe54",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": null,
+        "priority": "high",
+        "rationale": "Not wearing head protection in an area with potential falling objects poses a major risk of serious injury and is a significant safety compliance issue.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": null,
+        "priority": "high",
+        "rationale": "An injury has already occurred, which indicates an immediate safety issue that could impact more workers if not promptly addressed.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_QtCL9sNPnG90n2xfhTYuziKu": {
+    "id": "3925d77b-058d-4f4c-9d28-8a856fba1e88",
+    "prioritized_hazards": [
+      {
+        "id": "",
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "Failing to wear head protection exposes workers to serious injury from falling objects or impact, presenting a major safety and compliance risk.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "id": "",
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "A worker injury indicates an unresolved hazard and risk of further incidents, requiring prompt investigation and mitigation to prevent recurrence.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_Hk9MnvhGLI6El8kbHUCR53Gv": {
+    "id": "659eb403-14ca-4e6b-a0ed-9e21421a0eed",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "priority": "high",
+        "rationale": "The absence of head protection in an area with potential for falling objects presents a major safety risk of serious injury or fatality.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "priority": "high",
+        "rationale": "An actual injury indicates a major ongoing safety risk, and immediate attention is needed to prevent further incidents.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_czWy6GBV5owQznajm2VvQEpe": {
+    "id": "a6a3841c-b06a-4cbe-a038-2ef4b13591c4",
+    "prioritized_hazards": [
+      {
+        "id": "1",
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "The absence of required head protection in areas with risk of falling objects presents a major safety hazard and non-compliance with safety regulations.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "id": "2",
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "An injury incident signals a major safety risk and warrants prompt action to prevent recurrence and ensure compliance.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_Udh9EDe4ePp44X37Rh1rL6h9": {
+    "id": "b839afe1-43a1-4531-a54e-b0167bcdd489",
+    "prioritized_hazards": [
+      {
+        "id": "",
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "Not wearing a hard hat in an area prone to falling objects exposes workers to serious head injuries, representing a major safety risk.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "id": "",
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "A worker injury may indicate unaddressed hazards (e.g. slippery surfaces or falling objects) that could harm others; prompt action is needed to prevent repeat incidents.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_g2JT2ZOBAQeLrBN6zE3m9cRW": {
+    "id": "3bc48475-927c-406c-9796-f72cf2390ce8",
+    "prioritized_hazards": [
+      {
+        "id": "",
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "Lack of head protection in an area near shelving poses a significant risk for severe head injuries from falling objects.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "id": "",
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "priority": "high",
+        "rationale": "A recent injury indicates an ongoing hazard that could result in further harm, requiring urgent investigation and remediation.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  },
+  "thread_VqMJtnI6RPfgW2mRHXJkJLiT": {
+    "id": "c2ce2ee8-862d-4612-9467-9068d6c872b8",
+    "prioritized_hazards": [
+      {
+        "type": "ppe_violation",
+        "description": "Hard hat left on the floor, worker not wearing head protection",
+        "severity": "high",
+        "location": "warehouse floor, near shelving",
+        "recommendations": "Ensure workers wear hard hats at all times in warehouse; train staff on PPE compliance",
+        "id": "",
+        "priority": "high",
+        "rationale": "A lack of head protection exposes workers to serious injury from falling objects, which is a major safety and compliance risk.",
+        "recommended_timeline": "24h"
+      },
+      {
+        "type": "floor_safety",
+        "description": "Worker appears to have suffered an injury on the floor",
+        "severity": "high",
+        "location": "warehouse aisle near shelving",
+        "recommendations": "Investigate cause of injury, keep aisles clear, and enforce ladder and equipment safety procedures",
+        "id": "",
+        "priority": "high",
+        "rationale": "An actual injury incident suggests hazardous conditions that present a major safety and compliance risk to all workers.",
+        "recommended_timeline": "24h"
+      }
+    ]
+  }
+}

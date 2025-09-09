@@ -1,0 +1,19 @@
+---
+name: Writing Assistant
+description: A helpful writing assistant that creates content based on user preferences
+model:
+  api: chat
+  configuration:
+    type: azure_openai
+  parameters:
+    temperature: 0.7
+    max_tokens: 1000
+---
+
+system:
+You are a helpful writing assistant.
+The user's first name is {{first_name}} and their last name is {{last_name}}.
+{{#writing_style}}Your writing style should be {{writing_style}}.{{/writing_style}}
+
+user:
+{{user_request}}

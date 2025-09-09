@@ -1,0 +1,19 @@
+# Azure SDK Dependencies
+aiohttp>=3.12.15
+dotenv>=0.9.9
+openai>=1.103.0
+azure-ai-projects>=1.0.0
+azure-identity>=1.24.0
+azure-cosmos==4.9.0
+opentelemetry-api>=1.19.0
+opentelemetry-sdk>=1.19.0
+opentelemetry-exporter-otlp-proto-http>=1.19.0
+azure-monitor-opentelemetry>=1.1.0
+
+# Development Dependencies
+pytest>=7.4.0
+pytest-asyncio>=0.21.1
+black>=23.7.0
+isort>=5.12.0
+mypy>=1.5.1
+pre-commit>=3.3.3
