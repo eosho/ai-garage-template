@@ -6,6 +6,12 @@ This module defines the provider implementation for OpenAI’s API
 `LLMProviderBase` interface, adding retry logic, telemetry,
 and usage extraction through `LLMClientHelper`.
 
+Features:
+    * Generic, model-aware request building via `LLMModelConfig`.
+    * Resilient completion calls with retries.
+    * Centralized telemetry for logging and error tracking.
+    * Returns simple text or (text, usage) tuple for flexible consumption.
+
 Classes:
     OpenAIProvider: Provider implementation for OpenAI API.
 
@@ -73,7 +79,7 @@ class OpenAIProvider(LLMProviderBase):
             system_prompt (str): System context message for the model.
             user_prompt (str): User input message (plain text or multimodal).
             **kwargs (Any): Optional runtime parameters, including:
-                - max_completion_tokens (int): Maximum number of tokens for the response.
+                - max_completion_tokens (int): Maximum tokens for the response.
                 - reasoning (bool): Enable reasoning mode (if supported).
                 - response_format (Any): Structured response format (e.g., JSON schema).
                 - tools (list[dict]): Tool/function definitions for function calling.
@@ -88,29 +94,26 @@ class OpenAIProvider(LLMProviderBase):
             Exception: Propagates any SDK or runtime errors after retries.
         """
         # Build request using model-aware configuration
-        request_payload = self.model_config.build_request_args(
-            prompt=user_prompt,
-            temperature=kwargs.get("temperature", 0.7),
-            max_completion_tokens=kwargs.get("max_completion_tokens"),
-            reasoning=kwargs.get("reasoning"),
-            response_format=kwargs.get("response_format"),
-            tools=kwargs.get("tools"),
-        )
+        request_payload = self.model_config.build_request_args(**kwargs)
 
-        # Adapt to OpenAI "chat.completions.create" format
+        # Adapt to OpenAI chat format
         request_payload["model"] = self.model_config.name
         request_payload["messages"] = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
         ]
 
+        logger.debug("Final OpenAI request payload: %s", request_payload)
+
         async def _call():
             return await self.client.chat.completions.create(**request_payload)
 
         response = await LLMClientHelper.run_with_retry(_call)
+        if not response or not response.choices:
+            raise ValueError("No response received from OpenAI API")
 
         try:
-            content = response.choices[0].message.content.strip()
+            content = (response.choices[0].message.content or "").strip()
         except Exception as e:
             logger.error("Failed to parse completion response: %s", e, exc_info=True)
             raise
