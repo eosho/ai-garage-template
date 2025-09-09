@@ -11,7 +11,6 @@ factory/
 │   │   ├── base_agent.py
 │   │   └── generic_agent.py
 │   └── langchain/              # (Placeholder for LangChain agents)
-├── config/
 ├── config/                     # Centralized configuration management
 ├── llm/                        # Language Model (LLM) provider integration
 ├── logger/                     # Logging and OpenTelemetry integration
