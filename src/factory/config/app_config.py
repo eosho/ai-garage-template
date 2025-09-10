@@ -125,7 +125,7 @@ class AppConfig:
 
         # Logging
         self.APPLICATION_INSIGHTS_CONNECTION_STRING = self._resolve(
-            "APPLICATIONINSIGHTS_CONNECTION_STRING", required=False, default=""
+            "APPLICATIONINSIGHTS_CONNECTION_STRING", required=False, default="", is_secret=True
         )
 
         # Others
