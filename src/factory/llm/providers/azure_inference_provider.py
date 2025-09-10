@@ -1,3 +1,5 @@
+# azure_inference_provider.py
+
 """
 Azure AI Inference Provider (Generic Adapter).
 
@@ -37,7 +39,7 @@ from azure.ai.inference.models import (
     FunctionDefinition,
     ChatCompletionsToolCall,
     ChatRequestMessage,
-    TextContentItem, 
+    TextContentItem,
     ImageContentItem,
     ImageUrl,
     ImageDetailLevel

@@ -1,21 +1,9 @@
 """
-Prompt Manager Module (Production Optimized, Simplified).
+Prompt Manager Module.
 
 Centralized registry for LLM prompts with support for multiple source types:
     * Inline strings (STRING).
     * Jinja2 templates (.jinja2 files).
-    * Environment variables (ENV).
-    * YAML/JSON config files.
-
-Features:
-    - Enum-based prompt source types.
-    - Singleton/classmethod registry.
-    - Precompiled Jinja2 templates stored in registry (fast rendering).
-    - Strict variable enforcement (missing variables raise errors).
-    - Optional namespacing for grouping prompts.
-    - Convenience attribute access: PromptManager().incident(severity="Critical").
-    - Reloading of file-based prompts (JINJA2, YAML, JSON) when needed.
-    - Custom exceptions with clear error reporting.
 
 Example:
     >>> PromptManager.register_prompt("greet", "Hello {{ name }}!", PromptSourceType.STRING)

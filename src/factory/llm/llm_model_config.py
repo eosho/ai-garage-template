@@ -59,7 +59,6 @@ DEFAULT_FEATURES: Dict[str, type | tuple[type, ...]] = {
     "seed": int,
     "response_format": object,  # can be JSON schema (dict) or "json"
     "max_tokens": int,
-    "stream": bool,
     "max_completion_tokens": int,
 }
 

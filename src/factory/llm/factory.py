@@ -28,7 +28,8 @@ Usage:
     >>> response = await provider.get_completion(
     ...     system_prompt="You are a helpful assistant.",
     ...     user_prompt="Summarize observability in one sentence.",
-    ...     reasoning=True,
+    ...     return_usage=True,
+    ...     temperature=0.7,
     ...     max_completion_tokens=200
     ... )
     >>> print(response)
