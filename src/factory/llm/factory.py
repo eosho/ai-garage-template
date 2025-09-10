@@ -111,7 +111,6 @@ class LLMFactory:
     def _create_ai_project_provider(
         api_key: str,
         endpoint: str,
-        api_version: str,
         model_config: LLMModelConfig,
     ) -> AzureAIProjectProvider:
         """
@@ -126,7 +125,7 @@ class LLMFactory:
             AzureAIProjectProvider: Configured Azure AI Project provider instance.
         """
         credential = _get_azure_credential(api_key=api_key)
-        client = AIProjectClient(endpoint=endpoint, credential=credential, api_version=api_version)
+        client = AIProjectClient(endpoint=endpoint, credential=credential)
         logger.info("Created Azure AI Project provider for model=%s", model_config.name)
         return AzureAIProjectProvider(client, model_config)
 
@@ -155,8 +154,7 @@ class LLMFactory:
             return LLMFactory._create_ai_project_provider(
                 api_key=config.AZURE_OPENAI_API_KEY,
                 endpoint=config.AZURE_OPENAI_ENDPOINT,
-                model_config=model_config,
-                api_version=config.AZURE_OPENAI_API_VERSION
+                model_config=model_config
             )
 
         elif provider_type == "azure-ai-inference":
