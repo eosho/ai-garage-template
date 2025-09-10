@@ -1,150 +1,133 @@
 # Prompt Module Documentation
 
-The `prompt` module provides a `PromptManager` class, a simple and effective utility for creating, managing, and rendering prompts. It is designed to work with both simple string-based templates and the more structured `.prompty` file format, leveraging the `azure-ai-inference` library.
+The `prompt` module provides a centralized, production-optimized `PromptManager` for registering, managing, and rendering prompts for LLMs. It is designed for flexibility, performance, and reliability in real-world AI applications.
 
-## Core Concepts
+## Core Features
 
-1.  **`PromptManager`**: The central class for all prompt-related operations. It can be initialized with an optional directory to streamline loading of `.prompty` files.
-
-2.  **Multiple Prompt Sources**: The manager can create `PromptTemplate` objects from two sources:
-    *   **Strings**: Using `create_from_string()`, you can define a prompt directly in your code. This is useful for simple, static prompts.
-    *   **`.prompty` Files**: Using `create_from_prompty_file()`, you can load prompts from external `.prompty` files. This is the recommended approach for complex prompts as it separates prompt engineering from application logic.
-
-3.  **Templating and Rendering**: Prompts can contain variables using `{{variable_name}}` syntax. The `generate_messages()` method takes a `PromptTemplate` and a dictionary of variables to render the final list of messages ready to be sent to an LLM.
-
-4.  **Caching**: The `PromptManager` includes an in-memory cache for `.prompty` files. When a file is loaded, it is cached to avoid redundant file I/O on subsequent requests, improving performance.
-
-5.  **Prompt Registration**: You can "register" a prompt (either a string or a file path) with a unique name. This allows you to retrieve and render the prompt later using its name, abstracting away the source details.
-
-6.  **Error Handling**: The module defines custom exceptions (`PromptNotFoundError`, `PromptRenderError`) to provide clear feedback when a prompt file is missing or a rendering error occurs.
+- **Centralized Registry**: Prompts are registered globally and accessed via logical names and optional namespaces. This enables consistent prompt management across large codebases.
+- **Multiple Source Types**: Supports inline strings and Jinja2 template files. Easily extendable to other formats (YAML, JSON, .ENV).
+- **Jinja2 Templating**: All prompts are precompiled as Jinja2 templates with `StrictUndefined`, ensuring missing variables raise errors.
+- **Dynamic Accessor**: Prompts can be rendered via attribute access (e.g., `PromptManager().incident(severity="Critical")`) or via the class method `get_prompt()`.
+- **Reloading**: File-based prompts (Jinja2) can be reloaded at runtime for hot updates.
+- **Error Handling**: Custom exceptions (`PromptNotFoundError`, `PromptRenderError`) provide clear diagnostics.
+- **Telemetry**: Integrated logging and tracing for observability.
 
 ## Directory Structure
 
 ```
 prompt/
-├── manager.py          # (Likely older or alternative implementation)
-├── prompt.py           # The main file containing PromptManager
-├── example_prompt.jinja2 # Example of a Jinja2 template
-├── sample_prompt.prompty # Example of a .prompty file
+├── manager.py            # Main PromptManager implementation
+├── example_prompt.jinja2 # Example Jinja2 template
 └── __init__.py
 ```
 
 ---
 
-## How It Works: The Flow
+## How It Works
 
-1.  **Initialization**: Create an instance of `PromptManager`. You can optionally point it to a directory where your `.prompty` files are stored.
-    ```python
-    prompt_manager = PromptManager(prompts_directory="src/prompts")
-    ```
-2.  **Prompt Creation**:
-    *   **From File**: Call `prompt_manager.create_from_prompty_file("my_prompt.prompty")`. The manager resolves the path, loads the file, creates a `PromptTemplate`, and caches it.
-    *   **From String**: Call `prompt_manager.create_from_string("system:\nYou are a helpful bot.\nuser:\n{{question}}")`.
-3.  **Message Generation**: Call `prompt_manager.generate_messages(template, variables={"question": "What is AI?"})`. The manager uses the template's `create_messages` method to substitute the variables and produce the final message structure.
-4.  **Convenience Methods**: For simplicity, you can use methods like `load_and_generate()` or `create_and_generate()` to perform creation and rendering in a single step.
+### 1. Registering Prompts
 
-## Usage Examples
-
-### Example 1: Using a Simple String Prompt
-
-This is the most straightforward way to use the manager for simple tasks.
+Prompts are registered globally using `PromptManager.register_prompt()`. You specify a name, source (string or file path), source type, and optional namespace.
 
 ```python
-from src.factory.prompt.prompt import PromptManager, create_simple_prompt
+from src.factory.prompt.manager import PromptManager, PromptSourceType
 
-# Initialize the manager
-prompt_manager = PromptManager()
-
-# 1. Use a utility function to create a prompt string
-prompt_str = create_simple_prompt(
-    system_message="You are a translator.",
-    user_message="Translate '{{text_to_translate}}' to {{language}}."
-)
-
-# 2. Generate messages by substituting variables
-messages = prompt_manager.create_and_generate(
-    prompt_str,
-    text_to_translate="Hello, world!",
-    language="Spanish"
-)
-
-# The output is a list of dictionaries ready for the LLM
-# [{'role': 'system', 'content': 'You are a translator.'}, 
-#  {'role': 'user', 'content': "Translate 'Hello, world!' to Spanish."}]
-print(messages)
-```
-
-### Example 2: Loading from a `.prompty` File
-
-This is the recommended approach for managing more complex, version-controlled prompts.
-
-Assume you have a file `prompts/greeting.prompty`:
-```yaml
----
-name: Greeting Prompt
-description: A simple prompt to greet a user.
-model:
-  api: chat
-  configuration:
-    type: azure_openai
-    azure_deployment: gpt-4o
-  parameters:
-    max_tokens: 100
-    temperature: 0.8
----
-system:
-You are a friendly assistant.
-
-user:
-Say hello to {{name}} from {{city}}.
-```
-
-Now, you can use the `PromptManager` to load and render it:
-
-```python
-from src.factory.prompt.prompt import PromptManager
-
-# Initialize with the directory containing the .prompty files
-prompt_manager = PromptManager(prompts_directory="prompts")
-
-try:
-    # Load the prompt file and generate messages in one step
-    messages = prompt_manager.load_and_generate(
-        "greeting.prompty",
-        name="Alice",
-        city="New York"
-    )
-    print(messages)
-    # Output:
-    # [{'role': 'system', 'content': 'You are a friendly assistant.'},
-    #  {'role': 'user', 'content': 'Say hello to Alice from New York.'}]
-
-except FileNotFoundError as e:
-    print(f"Error: {e}")
-except Exception as e:
-    print(f"An unexpected error occurred: {e}")
-```
-
-### Example 3: Registering and Using a Named Prompt
-
-This is useful for decoupling the calling code from the prompt's source.
-
-```python
-from src.factory.prompt.prompt import PromptManager, PromptSourceType
-
-prompt_manager = PromptManager()
-
-# Register a prompt from a string
-prompt_manager.register_prompt(
-    name="summarizer",
-    source="system:\nSummarize the following text.\nuser:\n{{text}}",
+# Register a simple string prompt
+PromptManager.register_prompt(
+    name="greet",
+    source="Hello, {{ name }}!",
     source_type=PromptSourceType.STRING
 )
 
-# Generate messages using the registered name
-messages = prompt_manager.generate_from_registered(
-    "summarizer",
-    text="The quick brown fox jumps over the lazy dog."
+# Register a Jinja2 template from file
+PromptManager.register_prompt(
+    name="incident",
+    source="prompts/incident_report.jinja2",
+    source_type=PromptSourceType.JINJA2
 )
-print(messages)
 ```
+
+### 2. Rendering Prompts
+
+You can render a prompt by name using either the class method or the dynamic accessor:
+
+```python
+# Using the class method
+text = PromptManager.get_prompt("greet", name="Alice")
+
+# Using the dynamic accessor
+pm = PromptManager()
+text2 = pm.greet(name="Bob")
+
+print(text)   # "Hello, Alice!"
+print(text2)  # "Hello, Bob!"
+```
+
+### 3. Namespaces and Listing
+
+Prompts can be grouped by namespace for organization. You can list all registered prompts:
+
+```python
+PromptManager.register_prompt(
+    name="alert",
+    source="Attention: {{ message }}",
+    source_type=PromptSourceType.STRING,
+    namespace="notifications"
+)
+
+all_prompts = PromptManager.list_prompts()
+print(all_prompts)  # {('default', 'greet'): ..., ('notifications', 'alert'): ...}
+```
+
+### 4. Reloading File-Based Prompts
+
+If you update a Jinja2 template file, you can reload it without restarting your app:
+
+```python
+PromptManager.reload_prompts()
+```
+
+### 5. Error Handling
+
+- If you try to render a prompt that is not registered, a `PromptNotFoundError` is raised.
+- If a required variable is missing, a `PromptRenderError` is raised.
+
+---
+
+## Example: Using Prompts from External Python Files
+
+You can register prompt strings defined in other modules:
+
+```python
+from .prompts import DEMO_PROMPT
+PromptManager.register_prompt(
+    name="demo_prompt",
+    source=DEMO_PROMPT,
+    source_type=PromptSourceType.STRING
+)
+return PromptManager.get_prompt("demo_prompt")
+```
+
+OR
+
+```python
+from .prompts import DEMO_PROMPT
+prompt_manager = PromptManager.register_prompt(
+    name="demo_prompt",
+    source=DEMO_PROMPT,
+    source_type=PromptSourceType.STRING
+)
+return prompt_manager.demo_prompt()
+```
+
+---
+
+## Summary
+
+The `PromptManager` in `manager.py` is a robust, extensible solution for prompt management in AI applications. It supports:
+- Fast, reliable rendering with Jinja2
+- Centralized registration and access
+- Dynamic accessor for ergonomic usage
+- Reloading and error handling for production reliability
+
+See `manager.py` for full implementation details and advanced features.
