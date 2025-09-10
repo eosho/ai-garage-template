@@ -99,33 +99,41 @@ class AppConfig:
         self.AZURE_CLIENT_ID = self._resolve("AZURE_CLIENT_ID", required=False, is_secret=True)
         self.AZURE_CLIENT_SECRET = self._resolve("AZURE_CLIENT_SECRET", required=False, is_secret=True)
 
-        # Azure OpenAI
+        # Azure OpenAI/Projects
         self.AZURE_OPENAI_DEPLOYMENT = self._resolve("AZURE_OPENAI_DEPLOYMENT_NAME")
         self.AZURE_OPENAI_MODEL_NAME = self._resolve("AZURE_OPENAI_MODEL_NAME")
         self.AZURE_OPENAI_API_VERSION = self._resolve("AZURE_OPENAI_API_VERSION")
         self.AZURE_OPENAI_ENDPOINT = self._resolve("AZURE_OPENAI_ENDPOINT")
         self.AZURE_OPENAI_API_KEY = self._resolve("AZURE_OPENAI_API_KEY", required=False, is_secret=True)
 
+        # Azure AI Inference
+        self.AZURE_AI_INFERENCE_CHAT_ENDPOINT = self._resolve("AZURE_AI_INFERENCE_CHAT_ENDPOINT", required=False)
+        self.AZURE_AI_INFERENCE_CHAT_KEY = self._resolve("AZURE_AI_INFERENCE_CHAT_KEY", required=False, is_secret=True)
+        self.AZURE_AI_INFERENCE_DEPLOYMENT = self._resolve("AZURE_AI_INFERENCE_DEPLOYMENT_NAME", required=False)
+        self.AZURE_AI_INFERENCE_MODEL_NAME = self._resolve("AZURE_AI_INFERENCE_MODEL_NAME", required=False)
+        self.AZURE_AI_INFERENCE_API_VERSION = self._resolve("AZURE_AI_INFERENCE_API_VERSION", required=False, default="2024-08-01-preview")
+
         # OpenAI
         self.OPENAI_API_KEY = self._resolve("OPENAI_API_KEY", required=False, is_secret=True)
-        self.OPENAI_ENDPOINT = self._resolve("OPENAI_ENDPOINT", required=False)
-        self.OPENAI_API_VERSION = self._resolve("OPENAI_API_VERSION", required=False)
         self.OPENAI_MODEL_NAME = self._resolve("OPENAI_MODEL_NAME", required=False)
 
         # Cosmos
-        self.COSMOS_DB_ENDPOINT = self._resolve("COSMOS_DB_ENDPOINT")
-        self.COSMOS_DB_KEY = self._resolve("COSMOS_DB_KEY")
+        self.COSMOS_DB_ENDPOINT = self._resolve("COSMOS_DB_ENDPOINT", required=False, is_secret=True)
+        self.COSMOS_DB_KEY = self._resolve("COSMOS_DB_KEY", required=False, is_secret=True)
+        self.COSMOS_DB_DATABASE = self._resolve("COSMOS_DB_DATABASE", required=False)
+        self.COSMOS_DB_CONTAINER = self._resolve("COSMOS_DB_CONTAINER", required=False)
 
-        # Other
-        self.AZURE_AI_INFERENCE_CHAT_ENDPOINT = self._resolve("AZURE_AI_INFERENCE_CHAT_ENDPOINT", required=False)
+        # Logging
         self.APPLICATION_INSIGHTS_CONNECTION_STRING = self._resolve(
             "APPLICATIONINSIGHTS_CONNECTION_STRING", required=False, default=""
         )
 
-        # Defaults / business constants
+        # Others
         self.DEFAULT_PROVIDER = self._resolve("DEFAULT_PROVIDER", required=False, default=DEFAULT_PROVIDER_TYPE)
         self.MEMORY_PROVIDERS = MEMORY_PROVIDERS
-        self.DEFAULT_MEMORY_PROVIDER = DEFAULT_MEMORY_PROVIDER
+        self.DEFAULT_MEMORY_PROVIDER = self._resolve(
+            "DEFAULT_MEMORY_PROVIDER", required=False, default=DEFAULT_MEMORY_PROVIDER
+        )
 
 
     def _resolve(

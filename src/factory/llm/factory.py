@@ -149,18 +149,26 @@ class LLMFactory:
             logger.error("Unsupported model requested: %s", model_name)
             raise ValueError(f"Unsupported model: {model_name}")
 
-        api_key = config.AZURE_OPENAI_API_KEY
-        endpoint = config.AZURE_OPENAI_ENDPOINT
-        api_version = config.AZURE_OPENAI_API_VERSION
-
         if provider_type == "azure-ai-project":
-            return LLMFactory._create_ai_project_provider(api_key, endpoint, model_config)
+            return LLMFactory._create_ai_project_provider(
+                api_key=config.AZURE_OPENAI_API_KEY,
+                endpoint=config.AZURE_OPENAI_ENDPOINT,
+                model_config=model_config
+            )
 
         elif provider_type == "azure-ai-inference":
-            return LLMFactory._create_azure_inference_provider(api_key, endpoint, model_config, api_version)
+            return LLMFactory._create_azure_inference_provider(
+                api_key=config.AZURE_AI_INFERENCE_CHAT_KEY,
+                endpoint=config.AZURE_AI_INFERENCE_CHAT_ENDPOINT,
+                model_config=model_config,
+                api_version=config.AZURE_AI_INFERENCE_API_VERSION
+            )
 
         elif provider_type == "azure_openai":
-            return LLMFactory._create_openai_provider(api_key, model_config)
+            return LLMFactory._create_openai_provider(
+                api_key=config.AZURE_OPENAI_API_KEY,
+                model_config=model_config
+            )
 
         else:
             logger.error("Unsupported provider type: %s", provider_type)
