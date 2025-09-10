@@ -42,13 +42,15 @@ from azure.ai.inference.models import (
     ImageUrl,
     ImageDetailLevel
 )
-from src.factory.logger.telemetry import LoggingFactory
-from ..base_provider import LLMProviderBase
+from .base_provider import LLMProviderBase
 from ..client_helper import LLMClientHelper
 from src.factory.llm.llm_model_config import LLMModelConfig
+from src.factory.logger.telemetry import telemetry
 
-logging_factory = LoggingFactory()
-logger = logging_factory.get_logger(__name__)
+
+# Get a logger and tracer
+logger = telemetry.get_logger(__name__)
+tracer = telemetry.get_tracer(__name__)
 
 
 class AzureInferenceProvider(LLMProviderBase):

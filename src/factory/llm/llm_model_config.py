@@ -45,12 +45,13 @@ Usage Example:
     }
 """
 
-from typing import Any, Dict, Any, Literal, Optional, Union
-from src.factory.logger.telemetry import LoggingFactory
+from typing import Any, Dict, Any
+from src.factory.logger.telemetry import telemetry
 
-# Initialize telemetry/logging
-logging_factory = LoggingFactory()
-logger = logging_factory.get_logger(__name__)
+
+# Get a logger and tracer
+logger = telemetry.get_logger(__name__)
+tracer = telemetry.get_tracer(__name__)
 
 
 # Default features available across *all* chat completion models

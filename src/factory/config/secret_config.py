@@ -48,11 +48,13 @@ Environment:
 from pathlib import Path
 from typing import Optional
 
-from src.factory.logger.telemetry import LoggingFactory
+from src.factory.logger.telemetry import telemetry
 
-# Initialize telemetry (Azure Monitor if configured, otherwise fallback to console)
-logging_factory = LoggingFactory()
-logger = logging_factory.get_logger(__name__)
+
+# Get a logger and tracer
+logger = telemetry.get_logger(__name__)
+tracer = telemetry.get_tracer(__name__)
+
 
 # Default secrets directory
 SECRETS_PATH = "/etc/secrets"

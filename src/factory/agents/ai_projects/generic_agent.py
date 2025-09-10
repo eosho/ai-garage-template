@@ -54,7 +54,6 @@ from azure.core.exceptions import HttpResponseError
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 from src.factory.agents.ai_projects.base_agent import BaseAgent
-from src.factory.config.app_config import config
 from src.factory.logger.telemetry import telemetry
 
 logger = telemetry.get_logger(__name__)

@@ -41,21 +41,22 @@ from openai import AsyncAzureOpenAI
 from azure.ai.projects.aio import AIProjectClient
 from azure.ai.inference.aio import ChatCompletionsClient
 
-from src.factory.logger.telemetry import LoggingFactory
+from src.factory.logger.telemetry import telemetry
 from src.factory.config.app_config import config
 from src.factory.utils.utility import _get_azure_credential
 from src.factory.llm.llm_model_config import LLM_MODELS, LLMModelConfig
 
-from .base_provider import LLMProviderBase
+from .providers.base_provider import LLMProviderBase
 from .providers.azure_inference_provider import AzureInferenceProvider
 from .providers.openai_provider import OpenAIProvider
 from .providers.azure_ai_project_provider import AzureAIProjectProvider
 
 
-# Initialize telemetry
-logging_factory = LoggingFactory()
-logger = logging_factory.get_logger(__name__)
-tracer = logging_factory.get_tracer(__name__)
+
+
+# Get a logger and tracer
+logger = telemetry.get_logger(__name__)
+tracer = telemetry.get_tracer(__name__)
 
 
 class LLMFactory:

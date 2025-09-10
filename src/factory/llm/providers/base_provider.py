@@ -36,7 +36,7 @@ Example:
 
 from abc import ABC, abstractmethod
 from typing import Any, Union, Tuple, Dict
-from .llm_model_config import LLMModelConfig
+from ..llm_model_config import LLMModelConfig
 
 
 class LLMProviderBase(ABC):

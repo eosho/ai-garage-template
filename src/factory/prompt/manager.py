@@ -1,53 +1,12 @@
 """
-Prompt Manager Module (Production Optimized, Simplified).
-
-Centralized registry for LLM prompts with support for multiple source types:
-    * Inline strings (STRING).
-    * Jinja2 templates (.jinja2 files).
-    * Environment variables (ENV).
-    * YAML/JSON config files.
-
-Features:
-    - Enum-based prompt source types.
-    - Singleton/classmethod registry.
-    - Precompiled Jinja2 templates stored in registry (fast rendering).
-    - Strict variable enforcement (missing variables raise errors).
-    - Optional namespacing for grouping prompts.
-    - Convenience attribute access: PromptManager().incident(severity="Critical").
-    - Reloading of file-based prompts (JINJA2, YAML, JSON) when needed.
-    - Custom exceptions with clear error reporting.
-
-Example:
-    >>> PromptManager.register_prompt("greet", "Hello {{ name }}!", PromptSourceType.STRING)
-    >>> PromptManager.get_prompt("greet", name="Flo")
-    'Hello Flo!'
-    >>> pm = PromptManager()
-    >>> pm.greet(name="Flo")
-    'Hello Flo!'
+Simple Prompt Manager for handling string prompts and prompty files using Azure AI Inference.
 """
 
 import os
-import json
-import yaml
-
-from pathlib import Path
-from typing import Dict, Union, Optional, Any, Tuple
 from enum import Enum
-from jinja2 import Template, StrictUndefined
-from src.factory.logger.telemetry import (
-    LoggingFactory,
-    TelemetryLevel,
-    TracingProvider,
-)
-
-# Init telemetry
-logging_factory = LoggingFactory(
-    default_level=TelemetryLevel.INFO,
-    tracing_provider=TracingProvider.AZURE_MONITOR,
-)
-
-logger = logging_factory.get_logger(__name__)
-tracer = logging_factory.get_tracer(__name__)
+from pathlib import Path
+from typing import Dict, List, Any, Optional, Union
+from azure.ai.inference.prompts._patch import PromptTemplate
 
 
 class PromptManagerError(Exception):
@@ -55,231 +14,284 @@ class PromptManagerError(Exception):
 
 
 class PromptNotFoundError(PromptManagerError):
-    """Raised when a requested prompt is not registered."""
+    """Raised when a requested prompt is not found."""
 
 
 class PromptRenderError(PromptManagerError):
     """Raised when rendering a prompt fails."""
 
 
-class PromptSourceType(Enum):
+class PromptSourceType(str, Enum):
     """Supported prompt source types."""
     STRING = "string"
-    JINJA2 = "jinja2"
-    ENV = "env"
-    YAML = "yaml"
-    JSON = "json"
+    PROMPTY = "prompty"
 
 
 class PromptManager:
-    """Centralized prompt registry and renderer (singleton-like)."""
+    """Simple manager for creating and handling prompts using Azure AI Inference."""
 
-    # (namespace, name) → {"template": Template, "raw": str, "meta": dict}
-    _prompts: Dict[Tuple[str, str], Dict[str, Any]] = {}
-
-    @classmethod
-    def register_prompt(
-        cls,
-        name: str,
-        source: Union[str, Path],
-        source_type: PromptSourceType = PromptSourceType.STRING,
-        variable: Optional[str] = None,
-        namespace: str = "default",
-    ) -> None:
-        """Register a prompt.
+    def __init__(self, prompts_directory: Optional[str] = None):
+        """
+        Initialize the PromptManager.
 
         Args:
-            name: Logical name for the prompt (e.g., "greet").
-            source: Path, key, or raw string depending on source type.
-            source_type: Type of source (STRING, JINJA2, ENV, YAML, JSON).
-            variable: Key for YAML/JSON files if multiple prompts are defined.
-            namespace: Optional grouping of prompts (default "default").
+            prompts_directory: Optional directory path where prompty files are stored
+        """
+        self.prompts_directory = Path(prompts_directory) if prompts_directory else None
+        self._template_cache: Dict[str, PromptTemplate] = {}
+        self._registered_prompts: Dict[str, Dict[str, Any]] = {}
 
-        Raises:
-            PromptRenderError: If template fails pre-validation.
-            ValueError: If source type is unsupported.
+    @classmethod
+    def from_directory(cls, directory: str) -> 'PromptManager':
+        """Create a PromptManager from a directory.
+        
+        Args:
+            directory: Directory path where prompty files are stored.
+        """
+        return cls(prompts_directory=directory)
+
+    def create_from_string(self, prompt_template: str) -> PromptTemplate:
+        """Create a PromptTemplate from an inline string.
+
+        Args:
+            prompt_template: The prompt template string.
         """
         try:
-            with tracer.start_as_current_span("register_prompt"):
-                raw_template = cls._load_source(source, source_type, variable)
-                # Precompile template with strict undefined
-                template_obj = Template(raw_template, undefined=StrictUndefined)
-
-                cls._prompts[(namespace, name)] = {
-                    "template": template_obj,
-                    "raw": raw_template,
-                    "meta": {
-                        "source": source,
-                        "source_type": source_type,
-                        "variable": variable,
-                    },
-                }
-
-                logger.info(
-                    "Registered prompt '%s' (ns=%s, type=%s)",
-                    name,
-                    namespace,
-                    source_type.value,
-                )
-
+            return PromptTemplate.from_string(prompt_template=prompt_template)
         except Exception as e:
-            logger.error("Failed to register prompt '%s': %s", name, e, exc_info=True)
-            raise PromptRenderError(f"Failed to register prompt '{name}'") from e
+            raise PromptRenderError(f"Failed to create template from string: {e}") from e
 
-    @classmethod
-    def get_prompt(
-        cls,
-        prompt_name: str,
-        namespace: str = "default",
-        **kwargs: Any,
-    ) -> str:
-        """Retrieve and render a registered prompt.
+    def create_from_prompty_file(self, file_path: str, use_cache: bool = True) -> PromptTemplate:
+        """Create a PromptTemplate from a prompty file.
 
         Args:
-            name: Name of the prompt.
-            namespace: Namespace grouping (default "default").
-            **kwargs: Dynamic values to inject into the template.
+            file_path: Path to the prompty file.
+            use_cache: Whether to cache the loaded template for future use.
 
         Returns:
-            Rendered prompt string.
+            PromptTemplate: The loaded prompt template.
 
         Raises:
-            PromptNotFoundError: If prompt not registered.
-            PromptRenderError: If rendering fails (missing vars, bad template).
+            PromptNotFoundError: If the file does not exist.
         """
-        with tracer.start_as_current_span("get_prompt"):
-            key = (namespace, prompt_name)
-            if key not in cls._prompts:
-                logger.warning("Prompt not found: %s (ns=%s)", prompt_name, namespace)
-                raise PromptNotFoundError(f"Prompt '{prompt_name}' not registered (ns={namespace})")
+        try:
+            # Resolve file path
+            if self.prompts_directory and not os.path.isabs(file_path):
+                full_path = self.prompts_directory / file_path
+            else:
+                full_path = Path(file_path)
 
-            try:
-                template_obj: Template = cls._prompts[key]["template"]
-                rendered = template_obj.render(**kwargs)
-                logger.debug("Rendered prompt '%s' (ns=%s)", prompt_name, namespace)
-                return rendered
-            except Exception as e:
-                logger.error("Error rendering prompt '%s': %s", prompt_name, e, exc_info=True)
-                raise PromptRenderError(f"Failed to render prompt '{prompt_name}'") from e
+            full_path_str = str(full_path)
 
-    def __getattr__(self, name: str):
-        """
-        Dynamically resolve prompt accessors.
+            # Check if file exists
+            if not full_path.exists():
+                raise PromptNotFoundError(f"Prompt file not found: {full_path_str}")
 
-        Example:
-            Instead of calling:
-                self.prompt_manager.get_prompt("hazard_orchestration_agent_prompt")
-            You can simply do:
-                self.prompt_manager.hazard_orchestration_agent_prompt()
+            # Check cache first
+            if use_cache and full_path_str in self._template_cache:
+                return self._template_cache[full_path_str]
 
-        Args:
-            name (str): The name of the prompt function being accessed.
+            # Create template from file
+            template = PromptTemplate.from_prompty(full_path_str)
 
-        Returns:
-            Callable: A wrapper function that injects kwargs into the prompt template.
-        """
+            # Cache if requested
+            if use_cache:
+                self._template_cache[full_path_str] = template
 
-        def wrapper(**kwargs):
-            return self.get_prompt(name, **kwargs)
-        return wrapper
-
-    @classmethod
-    def list_prompts(cls) -> Dict[Tuple[str, str], str]:
-        """List all registered prompts."""
-        return {k: v["raw"] for k, v in cls._prompts.items()}
-
-    @classmethod
-    def reload_prompts(cls) -> None:
-        """Reload all file-based prompts (JINJA2, YAML, JSON)."""
-        with tracer.start_as_current_span("reload_prompts"):
-            reloaded = 0
-            for key, data in cls._prompts.items():
-                meta = data["meta"]
-                source_type = meta["source_type"]
-                if source_type in (PromptSourceType.JINJA2, PromptSourceType.YAML, PromptSourceType.JSON):
-                    try:
-                        raw_template = cls._load_source(meta["source"], source_type, meta["variable"])
-                        template_obj = Template(raw_template, undefined=StrictUndefined)
-                        cls._prompts[key]["template"] = template_obj
-                        reloaded += 1
-                        logger.info("Reloaded prompt '%s' (ns=%s)", key[1], key[0])
-                    except Exception as e:
-                        logger.error("Failed to reload prompt '%s': %s", key[1], e, exc_info=True)
-            logger.info("Reload complete. %d prompt(s) reloaded.", reloaded)
-
-    @staticmethod
-    def _load_source(source: Union[str, Path], source_type: PromptSourceType, variable: Optional[str]) -> str:
-        """
-        Load a source based on its type.
-
-        Args:
-            source (Union[str, Path]): The source to load (file path or string).
-            source_type (PromptSourceType): The type of the source (e.g., JINJA2, YAML).
-            variable (Optional[str]): The specific variable to extract (if any).
-
-        Returns:
-            str: The loaded source content.
-        """
-        if source_type == PromptSourceType.STRING:
-            return str(source)
-        if source_type == PromptSourceType.JINJA2:
-            return PromptManager._load_from_file(source)
-        if source_type == PromptSourceType.ENV:
-            template = os.environ.get(str(source))
-            if not template:
-                raise ValueError(f"Environment variable '{source}' not found")
             return template
-        if source_type == PromptSourceType.YAML:
-            return PromptManager._load_from_yaml(source, variable)
-        if source_type == PromptSourceType.JSON:
-            return PromptManager._load_from_json(source, variable)
-        raise ValueError(f"Unsupported source type: {source_type}")
 
-    @staticmethod
-    def _load_from_file(file_path: Union[str, Path]) -> str:
-        """Load a file and return the content as a string.
+        except PromptNotFoundError:
+            raise
+        except Exception as e:
+            raise PromptRenderError(f"Failed to create template from file '{file_path}': {e}") from e
 
-        Args:
-            file_path (Union[str, Path]): The path to the file.
-
-        Returns:
-            str: The content of the file.
-        """
-        return Path(file_path).read_text(encoding="utf-8")
-
-
-    @staticmethod
-    def _load_from_yaml(file_path: Union[str, Path], variable: Optional[str]) -> str:
-        """Load a YAML file and return the content as a string.
+    def generate_messages(
+        self,
+        template: Union[PromptTemplate, str],
+        variables: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> List[Dict[str, str]]:
+        """Generate messages from a template with provided variables.
 
         Args:
-            file_path (Union[str, Path]): The path to the YAML file.
-            variable (Optional[str]): The specific variable to extract from the YAML file.
+            template: The PromptTemplate instance or a prompt string.
+            variables: Optional variables to render the prompt.
+            **kwargs: Additional variables to render the prompt.
 
         Returns:
-            str: The content of the YAML file or the specified variable.
-        """
-        data = yaml.safe_load(Path(file_path).read_text(encoding="utf-8"))
-        if variable:
-            return data.get(variable, "")
-        if isinstance(data, str):
-            return data
-        raise ValueError("YAML must contain a string or specify variable key")
+            List[Dict[str, str]]: Generated messages.
 
-    @staticmethod
-    def _load_from_json(file_path: Union[str, Path], variable: Optional[str]) -> str:
-        """Load a JSON file and return the content as a string.
+        Raises:
+            PromptNotFoundError: If the prompt template is not found.
+        """
+        try:
+            if variables is None:
+                variables = {}
+
+            # Merge variables and kwargs
+            all_variables = {**variables, **kwargs}
+
+            # Create template if string provided
+            if isinstance(template, str):
+                template = self.create_from_string(template)
+
+            return template.create_messages(**all_variables)
+
+        except Exception as e:
+            if isinstance(e, (PromptNotFoundError, PromptRenderError)):
+                raise
+            raise PromptRenderError(f"Failed to generate messages: {e}") from e
+
+    def register_prompt(self, name: str, source: str, source_type: PromptSourceType) -> None:
+        """Register a prompt with the manager for easy retrieval.
 
         Args:
-            file_path (Union[str, Path]): The path to the JSON file.
-            variable (Optional[str]): The specific variable to extract from the JSON file.
+            name: Name to register the prompt under.
+            source: The prompt source, either a string or file path.
+            source_type: Type of the source (STRING or PROMPTY).
+
+        Raises:
+            ValueError: If the source_type is not supported.
+        """
+        self._registered_prompts[name] = {
+            'source': source,
+            'source_type': source_type
+        }
+
+    def get_registered_prompt(self, name: str) -> PromptTemplate:
+        """Get a registered prompt by name.
+
+        Args:
+            name: Name of the registered prompt.
 
         Returns:
-            str: The content of the JSON file or the specified variable.
+            PromptTemplate: The registered prompt template.
+
+        Raises:
+            PromptNotFoundError: If the prompt name is not registered.
         """
-        data = json.loads(Path(file_path).read_text(encoding="utf-8"))
-        if variable:
-            return data.get(variable, "")
-        if isinstance(data, str):
-            return data
-        raise ValueError("JSON must contain a string or specify variable key")
+        if name not in self._registered_prompts:
+            raise PromptNotFoundError(f"Prompt '{name}' is not registered")
+
+        prompt_info = self._registered_prompts[name]
+        source_type = prompt_info['source_type']
+        source = prompt_info['source']
+
+        if source_type == PromptSourceType.STRING:
+            return self.create_from_string(source)
+        elif source_type == PromptSourceType.PROMPTY:
+            return self.create_from_prompty_file(source)
+        else:
+            raise PromptManagerError(f"Unsupported source type: {source_type}")
+
+    # Convenience methods
+    def create_and_generate(self, prompt_template: str, variables: Optional[Dict[str, Any]] = None, **kwargs) -> List[Dict[str, str]]:
+        """Create a template from string and generate messages in one call.
+
+        Args:
+            prompt_template: The prompt template string.
+            variables: Optional variables to render the prompt.
+            **kwargs: Additional variables to render the prompt.
+
+        Returns:
+            List[Dict[str, str]]: Generated messages.
+        """
+        template = self.create_from_string(prompt_template)
+        return self.generate_messages(template, variables, **kwargs)
+
+    def load_and_generate(self, file_path: str, variables: Optional[Dict[str, Any]] = None, **kwargs) -> List[Dict[str, str]]:
+        """Load a prompty file and generate messages in one call.
+
+        Args:
+            file_path: Path to the prompty file.
+            variables: Optional variables to render the prompt.
+            **kwargs: Additional variables to render the prompt.
+
+        Returns:
+            List[Dict[str, str]]: Generated messages.
+        """
+        template = self.create_from_prompty_file(file_path)
+        return self.generate_messages(template, variables, **kwargs)
+
+    def generate_from_registered(self, name: str, variables: Optional[Dict[str, Any]] = None, **kwargs) -> List[Dict[str, str]]:
+        """Generate messages from a registered prompt.
+
+        Args:
+            name: Name of the registered prompt.
+            variables: Optional variables to render the prompt.
+            **kwargs: Additional variables to render the prompt.
+
+        Raises:
+            PromptNotFoundError: If the prompt name is not registered.
+
+        Returns:
+            List[Dict[str, str]]: Generated messages.
+        """
+        template = self.get_registered_prompt(name)
+        return self.generate_messages(template, variables, **kwargs)
+
+    @staticmethod
+    def get_template_info(template: PromptTemplate) -> Dict[str, Any]:
+        """Get information about a prompt template.
+
+        Args:
+            template: The PromptTemplate instance.
+
+        Returns:
+            Dict[str, Any]: Information about the template such as model name and parameters.
+        """
+        info = {}
+        if hasattr(template, 'model_name') and template.model_name:
+            info['model_name'] = template.model_name
+        if hasattr(template, 'parameters') and template.parameters:
+            info['parameters'] = template.parameters
+        return info
+
+    def clear_cache(self) -> int:
+        """Clear the template cache and return number of cleared items."""
+        cache_size = len(self._template_cache)
+        self._template_cache.clear()
+        return cache_size
+
+    def list_registered_prompts(self) -> List[str]:
+        """Get a list of registered prompt names."""
+        return list(self._registered_prompts.keys())
+
+
+# Simple utility functions
+@staticmethod
+def create_simple_prompt(system_message: str, user_message: str = "{{user_input}}") -> str:
+    """Create a simple two-role prompt template.
+
+    Args:
+        system_message: The system role message.
+        user_message: Placeholder for user input.
+
+    Returns:
+        str: The formatted simple prompt.
+    """
+    return f"""system:
+{system_message}
+
+user:
+{user_message}"""
+
+
+@staticmethod
+def create_assistant_prompt(name: str = "{{name}}", role: str = "helpful assistant", user_message: str = "{{user_message}}") -> str:
+    """Create a standard assistant prompt template.
+
+    Args:
+        name: Placeholder for user's name.
+        role: Role of the assistant.
+        user_message: Placeholder for user's message.
+
+    Returns:
+        str: The formatted assistant prompt.
+    """
+    return f"""system:
+You are a {role}.
+The user's name is {name}.
+
+user:
+{user_message}"""

@@ -25,12 +25,12 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from src.factory.memory.base_provider import MemoryProviderBase
-from src.factory.logger.telemetry import LoggingFactory
+from src.factory.logger.telemetry import telemetry
 
-# Initialize telemetry
-logging_factory = LoggingFactory()
-logger = logging_factory.get_logger(__name__)
-tracer = logging_factory.get_tracer(__name__)
+
+# Get a logger and tracer
+logger = telemetry.get_logger(__name__)
+tracer = telemetry.get_tracer(__name__)
 
 
 class JSONMemoryProvider(MemoryProviderBase):

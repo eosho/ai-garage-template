@@ -14,17 +14,15 @@ Usage:
 """
 
 from src.factory.config.app_config import MEMORY_PROVIDERS, DEFAULT_MEMORY_PROVIDER
-from src.factory.logger.telemetry import LoggingFactory
 from src.factory.memory.base_provider import MemoryProviderBase
 from src.factory.memory.providers.cosmos_provider import CosmosMemoryProvider
 from src.factory.memory.providers.json_provider import JSONMemoryProvider
+from src.factory.logger.telemetry import telemetry
 
-# Initialize telemetry
-logging_factory = LoggingFactory()
 
 # Get a logger and tracer
-logger = logging_factory.get_logger(__name__)
-tracer = logging_factory.get_tracer(__name__)
+logger = telemetry.get_logger(__name__)
+tracer = telemetry.get_tracer(__name__)
 
 
 class MemoryFactory:

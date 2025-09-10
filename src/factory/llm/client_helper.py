@@ -35,12 +35,12 @@ Classes:
 import asyncio
 from typing import Any, Dict
 
-from src.factory.logger.telemetry import LoggingFactory
+from src.factory.logger.telemetry import telemetry
 
-# Setup telemetry-aware logger
-logging_factory = LoggingFactory()
-logger = logging_factory.get_logger(__name__)
-tracer = logging_factory.get_tracer(__name__)
+
+# Get a logger and tracer
+logger = telemetry.get_logger(__name__)
+tracer = telemetry.get_tracer(__name__)
 
 
 class LLMClientHelper:

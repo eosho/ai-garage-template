@@ -63,14 +63,12 @@ from dotenv import (
 )
 
 from .secret_config import get_secret
-from src.factory.logger.telemetry import LoggingFactory
+from src.factory.logger.telemetry import telemetry
 
-# Initialize telemetry (Azure Monitor if configured, otherwise fallback to console)
-logging_factory = LoggingFactory()
 
 # Get a logger and tracer
-logger = logging_factory.get_logger(__name__)
-tracer = logging_factory.get_tracer(__name__)
+logger = telemetry.get_logger(__name__)
+tracer = telemetry.get_tracer(__name__)
 
 # Override dotenv values
 load_dotenv(find_dotenv(), override=True)
