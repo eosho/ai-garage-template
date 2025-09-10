@@ -90,6 +90,7 @@ class LLMFactory:
     @staticmethod
     def _create_openai_provider(
         api_key: str,
+        api_version: str,
         model_config: LLMModelConfig,
     ) -> OpenAIProvider:
         """
@@ -102,7 +103,7 @@ class LLMFactory:
         Returns:
             OpenAIProvider: Configured OpenAI provider instance.
         """
-        client = AsyncAzureOpenAI(api_key=api_key)
+        client = AsyncAzureOpenAI(api_key=api_key, api_version=api_version)
         logger.info("Created OpenAI provider for model=%s", model_config.name)
         return OpenAIProvider(client, model_config)
 
@@ -110,6 +111,7 @@ class LLMFactory:
     def _create_ai_project_provider(
         api_key: str,
         endpoint: str,
+        api_version: str,
         model_config: LLMModelConfig,
     ) -> AzureAIProjectProvider:
         """
@@ -124,7 +126,7 @@ class LLMFactory:
             AzureAIProjectProvider: Configured Azure AI Project provider instance.
         """
         credential = _get_azure_credential(api_key=api_key)
-        client = AIProjectClient(endpoint=endpoint, credential=credential)
+        client = AIProjectClient(endpoint=endpoint, credential=credential, api_version=api_version)
         logger.info("Created Azure AI Project provider for model=%s", model_config.name)
         return AzureAIProjectProvider(client, model_config)
 
@@ -140,7 +142,7 @@ class LLMFactory:
             ValueError: If the provider type or model is unsupported.
         """
         provider_type = config.DEFAULT_PROVIDER
-        model_name = config.AZURE_OPENAI_DEPLOYMENT
+        model_name = config.LLM_MODEL_NAME or config.LLM_MODEL_DEPLOYMENT_NAME
 
         logger.info("Creating LLM provider of type=%s model=%s", provider_type, model_name)
 
@@ -153,7 +155,8 @@ class LLMFactory:
             return LLMFactory._create_ai_project_provider(
                 api_key=config.AZURE_OPENAI_API_KEY,
                 endpoint=config.AZURE_OPENAI_ENDPOINT,
-                model_config=model_config
+                model_config=model_config,
+                api_version=config.AZURE_OPENAI_API_VERSION
             )
 
         elif provider_type == "azure-ai-inference":
@@ -167,7 +170,8 @@ class LLMFactory:
         elif provider_type == "azure_openai":
             return LLMFactory._create_openai_provider(
                 api_key=config.AZURE_OPENAI_API_KEY,
-                model_config=model_config
+                model_config=model_config,
+                api_version=config.AZURE_OPENAI_API_VERSION
             )
 
         else:

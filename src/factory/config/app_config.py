@@ -100,22 +100,22 @@ class AppConfig:
         self.AZURE_CLIENT_SECRET = self._resolve("AZURE_CLIENT_SECRET", required=False, is_secret=True)
 
         # Azure OpenAI/Projects
-        self.AZURE_OPENAI_DEPLOYMENT = self._resolve("AZURE_OPENAI_DEPLOYMENT_NAME")
-        self.AZURE_OPENAI_MODEL_NAME = self._resolve("AZURE_OPENAI_MODEL_NAME")
         self.AZURE_OPENAI_API_VERSION = self._resolve("AZURE_OPENAI_API_VERSION")
         self.AZURE_OPENAI_ENDPOINT = self._resolve("AZURE_OPENAI_ENDPOINT")
         self.AZURE_OPENAI_API_KEY = self._resolve("AZURE_OPENAI_API_KEY", required=False, is_secret=True)
 
+        # LLM model and deployment
+        self.LLM_MODEL_NAME = self._resolve("LLM_MODEL_NAME", required=True)
+        self.LLM_MODEL_DEPLOYMENT_NAME = self._resolve("LLM_MODEL_DEPLOYMENT_NAME", required=False)
+
         # Azure AI Inference
         self.AZURE_AI_INFERENCE_CHAT_ENDPOINT = self._resolve("AZURE_AI_INFERENCE_CHAT_ENDPOINT", required=False)
         self.AZURE_AI_INFERENCE_CHAT_KEY = self._resolve("AZURE_AI_INFERENCE_CHAT_KEY", required=False, is_secret=True)
-        self.AZURE_AI_INFERENCE_DEPLOYMENT = self._resolve("AZURE_AI_INFERENCE_DEPLOYMENT_NAME", required=False)
-        self.AZURE_AI_INFERENCE_MODEL_NAME = self._resolve("AZURE_AI_INFERENCE_MODEL_NAME", required=False)
         self.AZURE_AI_INFERENCE_API_VERSION = self._resolve("AZURE_AI_INFERENCE_API_VERSION", required=False, default="2024-08-01-preview")
 
         # OpenAI
         self.OPENAI_API_KEY = self._resolve("OPENAI_API_KEY", required=False, is_secret=True)
-        self.OPENAI_MODEL_NAME = self._resolve("OPENAI_MODEL_NAME", required=False)
+        self.OPENAI_API_VERSION = self._resolve("OPENAI_API_VERSION", required=False)
 
         # Cosmos
         self.COSMOS_DB_ENDPOINT = self._resolve("COSMOS_DB_ENDPOINT", required=False, is_secret=True)

@@ -21,31 +21,48 @@ For detailed documentation on each component, please refer to the links below.
 The following environment variables are used to configure the factory modules:
 
 ```env
+# AI Garage Template / Factory Module Settings
+
+# App Settings
+APP_NAME="AI Garage Template"
+ENVIRONMENT=development
+
 # LLM Provider ('azure-ai-project', 'azure-ai-inference', 'azure_openai')
-DEFAULT_PROVIDER_TYPE=azure_openai
-
-# Azure OpenAI / AI Inference Settings
-AZURE_OPENAI_API_KEY=your_api_key
-AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
-AZURE_OPENAI_DEPLOYMENT_NAME=your_deployment_name
-AZURE_OPENAI_MODEL_NAME=your_model_name
-AZURE_OPENAI_API_VERSION=2024-06-01
-AZURE_AI_INFERENCE_CHAT_ENDPOINT=your_inference_endpoint
-
-# OpenAI Settings
-OPENAI_API_KEY=sk-your_key
-OPENAI_ENDPOINT=https://api.openai.com/v1
-OPENAI_MODEL_NAME=gpt-4o
-OPENAI_API_VERSION=v1
+DEFAULT_PROVIDER=azure_openai
 
 # Memory Provider ('cosmosdb', 'json')
 DEFAULT_MEMORY_PROVIDER=json
 
+# LLM model and deployment name
+LLM_MODEL_NAME=your-llm-model-name
+LLM_MODEL_DEPLOYMENT_NAME=your-llm-deployment-name
+
+# Azure OpenAI/Project Settings
+AZURE_OPENAI_API_KEY=your-azure-openai-api-key
+AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
+AZURE_OPENAI_API_VERSION=2024-06-01
+
+# Azure AI Inference Settings
+AZURE_AI_INFERENCE_CHAT_ENDPOINT=your-inference-endpoint
+AZURE_AI_INFERENCE_CHAT_KEY=your-inference-key
+AZURE_AI_INFERENCE_API_VERSION=2024-12-01-preview
+
+# OpenAI Settings
+OPENAI_API_KEY=sk-your-openai-key
+OPENAI_MODEL_NAME=gpt-4o
+
+# Azure Authentication (for managed identity)
+AZURE_CLIENT_ID=your-azure-client-id
+AZURE_TENANT_ID=your-azure-tenant-id
+AZURE_CLIENT_SECRET=your-azure-client-secret
+
 # Cosmos DB Settings
-COSMOS_DB_ENDPOINT=your_cosmos_endpoint
-COSMOS_DB_KEY=your_cosmos_key
+COSMOS_DB_ENDPOINT=your-cosmos-endpoint
+COSMOS_DB_KEY=your-cosmos-key
+COSMOS_DB_DATABASE=your-database-name
+COSMOS_DB_CONTAINER=your-container-name
 
 # Telemetry
-APPLICATIONINSIGHTS_CONNECTION_STRING=your_app_insights_connection_string
+APPLICATIONINSIGHTS_CONNECTION_STRING=your-app-insights-connection-string
 ```
 
