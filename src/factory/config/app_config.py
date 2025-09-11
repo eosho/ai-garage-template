@@ -122,6 +122,10 @@ class AppConfig:
         self.COSMOS_DB_KEY = self._resolve("COSMOS_DB_KEY", required=False, is_secret=True)
         self.COSMOS_DB_DATABASE = self._resolve("COSMOS_DB_DATABASE", required=False)
         self.COSMOS_DB_CONTAINER = self._resolve("COSMOS_DB_CONTAINER", required=False)
+        
+        # Big Query
+        self.BQ_CREDENTIALS_FILE = self._resolve("BQ_CREDENTIALS_FILE", required=False, is_secret=True)
+        self.BQ_CREDENTIALS_JSON = self._resolve("BQ_CREDENTIALS_JSON", required=False, is_secret=True)
 
         # Logging
         self.APPLICATION_INSIGHTS_CONNECTION_STRING = self._resolve(
