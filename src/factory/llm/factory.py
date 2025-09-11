@@ -44,7 +44,7 @@ from azure.ai.inference.aio import ChatCompletionsClient
 
 from src.factory.logger.telemetry import telemetry
 from src.factory.config.app_config import config
-from src.factory.utils.utility import _get_azure_credential
+from factory.utils.clients import _get_azure_credential
 from src.factory.llm.llm_model_config import LLM_MODELS, LLMModelConfig
 
 from .providers.base_provider import LLMProviderBase

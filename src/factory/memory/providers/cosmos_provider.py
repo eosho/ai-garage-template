@@ -28,7 +28,7 @@ from azure.cosmos.aio import CosmosClient
 from azure.cosmos import PartitionKey, exceptions
 
 from src.factory.memory.base_provider import MemoryProviderBase
-from src.factory.utils.utility import _get_azure_credential
+from factory.utils.clients import _get_azure_credential
 from src.factory.logger.telemetry import telemetry
 
 
