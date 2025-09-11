@@ -13,11 +13,11 @@ Usage:
     {"foo": "bar"}
 """
 
-from src.factory.config.app_config import MEMORY_PROVIDERS, DEFAULT_MEMORY_PROVIDER
-from src.factory.memory.base_provider import MemoryProviderBase
-from src.factory.memory.providers.cosmos_provider import CosmosMemoryProvider
-from src.factory.memory.providers.json_provider import JSONMemoryProvider
-from src.factory.logger.telemetry import telemetry
+from factory.config.app_config import MEMORY_PROVIDERS, DEFAULT_MEMORY_PROVIDER
+from factory.memory.base_provider import MemoryProviderBase
+from factory.memory.providers.cosmos_provider import CosmosMemoryProvider
+from factory.memory.providers.json_provider import JSONMemoryProvider
+from factory.logger.telemetry import telemetry
 
 
 # Get a logger and tracer

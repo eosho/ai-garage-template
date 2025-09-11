@@ -63,7 +63,7 @@ from dotenv import (
 )
 
 from .secret_config import get_secret
-from src.factory.logger.telemetry import telemetry
+from factory.logger.telemetry import telemetry
 
 
 # Get a logger and tracer

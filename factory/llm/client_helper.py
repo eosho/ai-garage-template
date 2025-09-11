@@ -35,7 +35,7 @@ Classes:
 import asyncio
 from typing import Any, Dict
 
-from src.factory.logger.telemetry import telemetry
+from factory.logger.telemetry import telemetry
 
 
 # Get a logger and tracer

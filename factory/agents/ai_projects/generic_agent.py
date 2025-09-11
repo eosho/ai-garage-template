@@ -29,8 +29,8 @@ Classes:
 
 Example Usage:
     >>> from azure.ai.projects.aio import AIProjectClient
-    >>> from src.agents.generic_agent import GenericAgent
-    >>> from src.factory.config.app_config import config
+    >>> from agents.generic_agent import GenericAgent
+    >>> from factory.config.app_config import config
 
     >>> client = AIProjectClient(endpoint=config.AZURE_OPENAI_ENDPOINT, credential="...")
     >>> agent = GenericAgent(project_client=client, model="gpt-4o", name="helper-agent")
@@ -53,8 +53,8 @@ from azure.ai.agents.models import (
 from azure.core.exceptions import HttpResponseError
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
-from src.factory.agents.ai_projects.base_agent import BaseAgent
-from src.factory.logger.telemetry import telemetry
+from factory.agents.ai_projects.base_agent import BaseAgent
+from factory.logger.telemetry import telemetry
 
 logger = telemetry.get_logger(__name__)
 tracer = telemetry.get_tracer(__name__)

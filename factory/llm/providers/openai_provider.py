@@ -38,8 +38,8 @@ from typing import Any, Dict, Tuple, Union
 
 from .base_provider import LLMProviderBase
 from ..client_helper import LLMClientHelper
-from src.factory.llm.llm_model_config import LLMModelConfig
-from src.factory.logger.telemetry import telemetry
+from factory.llm.llm_model_config import LLMModelConfig
+from factory.logger.telemetry import telemetry
 
 
 # Get a logger and tracer

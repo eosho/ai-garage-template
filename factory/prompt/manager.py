@@ -20,7 +20,7 @@ from pathlib import Path
 from typing import Dict, Union, Optional, Any, Tuple
 from enum import Enum
 from jinja2 import Template, StrictUndefined
-from src.factory.logger.telemetry import telemetry
+from factory.logger.telemetry import telemetry
 
 
 # Get a logger and tracer

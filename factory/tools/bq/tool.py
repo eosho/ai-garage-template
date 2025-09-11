@@ -38,7 +38,7 @@ from typing import Any, Dict, List, Optional, Set, Callable
 from google.cloud import bigquery
 from google.cloud.exceptions import GoogleCloudError
 
-from src.factory.logger.telemetry import telemetry
+from factory.logger.telemetry import telemetry
 from factory.utils.clients import _get_bigquery_client
 
 

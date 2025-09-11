@@ -58,8 +58,8 @@ AZURE_TENANT_ID=your-azure-tenant-id
 AZURE_CLIENT_SECRET=your-azure-client-secret
 
 # Big Query
-BQ_CREDENTIALS_FILE=
-BQ_CREDENTIALS_JSON=
+BQ_CREDENTIALS_FILE=your-bq-credentials-file
+BQ_CREDENTIALS_JSON=your-bq-credentials-json
 
 # Cosmos DB Settings
 COSMOS_DB_ENDPOINT=your-cosmos-endpoint
