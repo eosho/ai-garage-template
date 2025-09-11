@@ -31,7 +31,7 @@ Globals:
         Registry of known models and their supported features.
 
 Usage Example:
-    >>> from src.factory.llm.llm_model_config import LLM_MODELS
+    >>> from factory.llm.llm_model_config import LLM_MODELS
     >>> gpt5 = LLM_MODELS["gpt-5"]
     >>> request = gpt5.build_request_args(
     ...     max_completion_tokens=2048,
@@ -46,7 +46,7 @@ Usage Example:
 """
 
 from typing import Any, Dict, Any
-from src.factory.logger.telemetry import telemetry
+from factory.logger.telemetry import telemetry
 
 
 # Get a logger and tracer

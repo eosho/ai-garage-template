@@ -51,8 +51,8 @@ llm/
 This example demonstrates how to use the factory to get a provider and perform a completion. The factory handles all the backend complexity.
 
 ```python
-from src.factory.llm.factory import LLMFactory
-from src.factory.config.app_config import config
+from factory.llm.factory import LLMFactory
+from factory.config.app_config import config
 
 async def get_summary(text: str):
     """

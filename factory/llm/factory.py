@@ -23,7 +23,7 @@ Classes:
         Factory for instantiating provider classes given configuration and model metadata.
 
 Usage:
-    >>> from src.factory.llm.factory import LLMFactory
+    >>> from factory.llm.factory import LLMFactory
     >>> provider = await LLMFactory.create_llm_provider()
     >>> response = await provider.get_completion(
     ...     system_prompt="You are a helpful assistant.",

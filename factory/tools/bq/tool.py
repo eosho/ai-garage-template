@@ -21,7 +21,7 @@ Intended Usage:
     be executed safely as part of workflows, without exposing the BigQuery SDK.
 
 Example:
-    >>> from src.factory.tools.bq import run_query, get_schema
+    >>> from factory.tools.bq import run_query, get_schema
     >>> result = await run_query("SELECT * FROM `dataset.table` WHERE id=@id",
     ...                          params={"id": 123})
     >>> print(result["rows"][0])

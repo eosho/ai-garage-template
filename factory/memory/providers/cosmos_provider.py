@@ -27,9 +27,9 @@ from typing import Any, Dict, List, Optional
 from azure.cosmos.aio import CosmosClient
 from azure.cosmos import PartitionKey, exceptions
 
-from src.factory.memory.base_provider import MemoryProviderBase
+from factory.memory.base_provider import MemoryProviderBase
 from factory.utils.clients import _get_azure_credential
-from src.factory.logger.telemetry import telemetry
+from factory.logger.telemetry import telemetry
 
 
 # Get a logger and tracer

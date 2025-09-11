@@ -48,7 +48,7 @@ This function is typically not called directly by application code. Instead, it 
 ```python
 # Inside a factory or helper module
 
-from src.factory.utils.utility import _get_azure_credential
+from factory.utils.utility import _get_azure_credential
 from azure.ai.inference.aio import ChatCompletionsClient
 
 def get_inference_client():
@@ -96,7 +96,7 @@ If neither file nor JSON credentials are provided, the function falls back to AD
 #### Usage Example
 
 ```python
-from src.factory.utils.clients import _get_bigquery_client
+from factory.utils.clients import _get_bigquery_client
 
 def get_bigquery_client():
     """

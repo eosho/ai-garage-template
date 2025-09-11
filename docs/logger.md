@@ -47,7 +47,7 @@ logger/
 This example shows how to configure the `LoggingFactory` at startup and use it in a function.
 
 ```python
-from src.factory.logger.telemetry import LoggingFactory, TelemetryLevel, TracingProvider
+from factory.logger.telemetry import LoggingFactory, TelemetryLevel, TracingProvider
 import os
 
 def initialize_app():

@@ -30,7 +30,7 @@ prompt/
 Prompts are registered globally using `PromptManager.register_prompt()`. You specify a name, source (string or file path), source type, and optional namespace.
 
 ```python
-from src.factory.prompt.manager import PromptManager, PromptSourceType
+from factory.prompt.manager import PromptManager, PromptSourceType
 
 # Register a simple string prompt
 PromptManager.register_prompt(

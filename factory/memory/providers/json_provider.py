@@ -24,8 +24,8 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from src.factory.memory.base_provider import MemoryProviderBase
-from src.factory.logger.telemetry import telemetry
+from factory.memory.base_provider import MemoryProviderBase
+from factory.logger.telemetry import telemetry
 
 
 # Get a logger and tracer

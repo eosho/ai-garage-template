@@ -55,9 +55,9 @@ This example shows how to use `GenericAgent` to create an agent that can answer 
 
 ```python
 from azure.ai.projects.aio import AIProjectClient
-from src.factory.agents.ai_projects.generic_agent import GenericAgent
-from src.factory.config.app_config import config
-from src.factory.utils.utility import _get_azure_credential
+from factory.agents.ai_projects.generic_agent import GenericAgent
+from factory.config.app_config import config
+from factory.utils.utility import _get_azure_credential
 
 async def ask_agent_a_question(question: str):
     """

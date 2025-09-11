@@ -43,8 +43,8 @@ memory/
 This example demonstrates how to use the `MemoryFactory` to create a memory provider and then use it to save and load an agent's conversation history.
 
 ```python
-from src.factory.memory.factory import MemoryFactory
-from src.factory.config.app_config import config
+from factory.memory.factory import MemoryFactory
+from factory.config.app_config import config
 
 async def manage_session_state(session_id: str):
     """

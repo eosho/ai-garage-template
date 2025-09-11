@@ -12,8 +12,8 @@ from google.cloud import bigquery
 from google.cloud.exceptions import GoogleCloudError
 from google.oauth2 import service_account
 
-from src.factory.config.app_config import config
-from src.factory.logger.telemetry import telemetry
+from factory.config.app_config import config
+from factory.logger.telemetry import telemetry
 
 # Get a logger and tracer
 logger = telemetry.get_logger(__name__)

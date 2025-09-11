@@ -11,9 +11,9 @@ Classes:
 
 Example:
     >>> from azure.ai.projects.aio import AIProjectClient
-    >>> from src.factory.utils.utility import _get_azure_credential
-    >>> from src.factory.llm.azure_ai_project_provider import AzureAIProjectProvider
-    >>> from src.factory.llm.llm_model_config import LLM_MODELS
+    >>> from factory.utils.utility import _get_azure_credential
+    >>> from factory.llm.azure_ai_project_provider import AzureAIProjectProvider
+    >>> from factory.llm.llm_model_config import LLM_MODELS
     >>>
     >>> credential = _get_azure_credential(api_key="<your-api-key>")
     >>> client = AIProjectClient(endpoint="https://<endpoint>", credential=credential)

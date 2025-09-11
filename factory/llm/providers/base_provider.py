@@ -16,9 +16,9 @@ Responsibilities:
     * Enable consistent telemetry and usage reporting.
 
 Example:
-    >>> from src.factory.llm.openai_provider import OpenAIProvider
+    >>> from factory.llm.openai_provider import OpenAIProvider
     >>> from openai import AsyncOpenAI
-    >>> from src.factory.llm.llm_model_config import LLM_MODELS
+    >>> from factory.llm.llm_model_config import LLM_MODELS
     >>>
     >>> client = AsyncOpenAI(api_key="<your-api-key>")
     >>> model_config = LLM_MODELS["gpt-4o"]
