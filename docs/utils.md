@@ -6,7 +6,7 @@ The `utils` module contains shared helper functions and utilities that are used 
 
 ```
 utils/
-└── utility.py  # Main file containing utility functions
+└── clients.py  # Main file containing all client functions
 ```
 
 ---
@@ -73,3 +73,52 @@ def get_inference_client():
 ```
 
 By centralizing this logic, any module that needs to connect to Azure can do so with a single, reliable function call, without having to worry about the complexities of authentication.
+
+---
+
+### `_get_bigquery_client()`
+
+This function initializes a Google BigQuery client with credentials resolved automatically. It standardizes authentication across different environments, ensuring the client is always configured correctly.
+
+### How It Works: Credential Resolution
+
+The function tries the following in order:
+
+1. `BQ_CREDENTIALS_FILE`
+If provided in configuration, the client will load service account credentials from a JSON key file.
+
+2. `BQ_CREDENTIALS_JSON`
+If provided, the client will parse a JSON string or dictionary containing service account credentials.
+
+3. **Application Default Credentials (ADC)**
+If neither file nor JSON credentials are provided, the function falls back to ADC. This allows BigQuery to authenticate automatically when running inside GCP environments like GKE, Cloud Run, or Compute Engine.
+
+#### Usage Example
+
+```python
+from src.factory.utils.clients import _get_bigquery_client
+
+def get_bigquery_client():
+    """
+    Creates a client for the Google BigQuery service.
+    """
+    try:
+        # 1. Get the client using the factory function.
+        #    It will automatically resolve authentication in the following order:
+        #    - BQ_CREDENTIALS_FILE (service account file path)
+        #    - BQ_CREDENTIALS_JSON (JSON string or dict)
+        #    - ADC (Application Default Credentials, e.g., GCP runtime)
+        client = _get_bigquery_client(
+            project_id="", # optional
+            location="", # optional
+        )
+
+        # 2. Return the ready-to-use client.
+        return client
+
+    except Exception as e:
+        print(f"Failed to create BigQuery client: {e}")
+        return None
+```
+
+The function then instantiates a `bigquery.Client` using the resolved credentials, project ID, and location. On success, the client is ready to be used for queries, dataset management, and schema operations.
